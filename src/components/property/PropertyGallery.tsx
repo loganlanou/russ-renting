@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
 import { PropertyImage } from '@/types/property';
 
@@ -25,6 +24,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterRoom, setFilterRoom] = useState<PropertyImage['room'] | 'all'>('all');
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set([0]));
 
   const filteredImages = filterRoom === 'all'
     ? images
@@ -33,6 +33,10 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
   const uniqueRooms = Array.from(new Set(images.map(img => img.room)));
 
   const currentImage = filteredImages[selectedImage] || images[0];
+
+  const handleImageLoad = (index: number) => {
+    setLoadedImages(prev => new Set([...prev, index]));
+  };
 
   return (
     <>
@@ -59,23 +63,21 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
-              {roomLabels[room]} ({images.filter(img => img.room === room).length})
+              {roomLabels[room]} ({images.filter(img => img.room === filterRoom).length})
             </button>
           ))}
         </div>
 
         {/* Main Image */}
         <div
-          className="relative h-96 md:h-[500px] rounded-lg overflow-hidden cursor-pointer group"
+          className="relative h-96 md:h-[500px] rounded-lg overflow-hidden cursor-pointer group bg-slate-200"
           onClick={() => setIsModalOpen(true)}
         >
-          <Image
+          <img
             src={currentImage.url}
             alt={`${title} - ${currentImage.caption}`}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, 66vw"
+            className="w-full h-full object-cover"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-colors" />
 
@@ -103,23 +105,25 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
 
         {/* Thumbnail Strip */}
         {filteredImages.length > 1 && (
-          <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-thin">
+          <div className="flex space-x-2 overflow-x-auto pb-2">
             {filteredImages.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(index)}
-                className={`relative w-24 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-all ${
+                className={`relative w-24 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-all bg-slate-200 ${
                   selectedImage === index
                     ? 'border-amber-500 ring-2 ring-amber-500/30'
                     : 'border-transparent hover:border-slate-300'
                 }`}
               >
-                <Image
+                <img
                   src={image.url}
                   alt={`${title} - ${image.caption}`}
-                  fill
-                  className="object-cover"
-                  sizes="96px"
+                  className={`w-full h-full object-cover transition-opacity duration-300 ${
+                    loadedImages.has(index) ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  loading="lazy"
+                  onLoad={() => handleImageLoad(index)}
                 />
                 {selectedImage === index && (
                   <div className="absolute inset-0 bg-amber-500/10" />
@@ -161,15 +165,13 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
 
           {/* Main image */}
           <div
-            className="relative max-w-6xl max-h-[85vh] w-full h-full mx-16"
+            className="relative max-w-6xl max-h-[85vh] w-full h-full mx-16 flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
+            <img
               src={filteredImages[selectedImage].url}
               alt={`${title} - ${filteredImages[selectedImage].caption}`}
-              fill
-              className="object-contain"
-              sizes="100vw"
+              className="max-w-full max-h-full object-contain"
             />
           </div>
 
@@ -205,18 +207,17 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                   e.stopPropagation();
                   setSelectedImage(index);
                 }}
-                className={`relative w-16 h-12 flex-shrink-0 rounded overflow-hidden transition-all ${
+                className={`relative w-16 h-12 flex-shrink-0 rounded overflow-hidden transition-all bg-slate-700 ${
                   selectedImage === index
                     ? 'ring-2 ring-amber-500 opacity-100'
                     : 'opacity-50 hover:opacity-75'
                 }`}
               >
-                <Image
+                <img
                   src={image.url}
                   alt={`Thumbnail ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="64px"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </button>
             ))}
