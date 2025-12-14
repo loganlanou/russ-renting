@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable static export for fast, pre-rendered pages
-  output: 'export',
-
-  // Disable image optimization for static export (use native img or optimized sources)
+  // Disable image optimization for external images
   images: {
     unoptimized: true,
   },

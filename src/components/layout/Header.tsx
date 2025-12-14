@@ -4,6 +4,28 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 
+// Check if Clerk is configured (client-side check)
+const isClerkConfigured = typeof window !== 'undefined' &&
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+  !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes('your_') &&
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.startsWith('pk_');
+
+// Conditionally import Clerk components
+let SignedIn: React.ComponentType<{ children: React.ReactNode }> | null = null;
+let SignedOut: React.ComponentType<{ children: React.ReactNode }> | null = null;
+let UserButton: React.ComponentType<{ afterSignOutUrl?: string; appearance?: object }> | null = null;
+
+if (isClerkConfigured) {
+  try {
+    const clerk = require('@clerk/nextjs');
+    SignedIn = clerk.SignedIn;
+    SignedOut = clerk.SignedOut;
+    UserButton = clerk.UserButton;
+  } catch {
+    // Clerk not available
+  }
+}
+
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -13,6 +35,107 @@ export function Header() {
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ];
+
+  // Render auth section based on Clerk availability
+  const renderAuthSection = () => {
+    if (isClerkConfigured && SignedIn && SignedOut && UserButton) {
+      return (
+        <div className="flex items-center space-x-4 ml-4 border-l border-slate-200 pl-4">
+          <SignedOut>
+            <Link href="/sign-in" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+              Sign In
+            </Link>
+            <Link href="/sign-up">
+              <Button variant="primary" size="sm">
+                Sign Up
+              </Button>
+            </Link>
+          </SignedOut>
+          <SignedIn>
+            <Link href="/dashboard" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+              Tenant Portal
+            </Link>
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "w-9 h-9"
+                }
+              }}
+            />
+          </SignedIn>
+        </div>
+      );
+    }
+
+    // Fallback when Clerk is not configured
+    return (
+      <div className="flex items-center space-x-4 ml-4 border-l border-slate-200 pl-4">
+        <Link href="/sign-in" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+          Sign In
+        </Link>
+        <Link href="/sign-up">
+          <Button variant="primary" size="sm">
+            Sign Up
+          </Button>
+        </Link>
+      </div>
+    );
+  };
+
+  const renderMobileAuthSection = () => {
+    if (isClerkConfigured && SignedIn && SignedOut && UserButton) {
+      return (
+        <div className="border-t border-slate-200 pt-4 space-y-4">
+          <SignedOut>
+            <Link
+              href="/sign-in"
+              className="block text-slate-600 hover:text-slate-800 font-medium transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Sign In
+            </Link>
+            <Link href="/sign-up" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button variant="primary" className="w-full">
+                Sign Up
+              </Button>
+            </Link>
+          </SignedOut>
+          <SignedIn>
+            <Link
+              href="/dashboard"
+              className="block text-slate-600 hover:text-slate-800 font-medium transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Tenant Portal
+            </Link>
+            <div className="flex items-center space-x-2">
+              <UserButton afterSignOutUrl="/" />
+              <span className="text-slate-600">My Account</span>
+            </div>
+          </SignedIn>
+        </div>
+      );
+    }
+
+    // Fallback when Clerk is not configured
+    return (
+      <div className="border-t border-slate-200 pt-4 space-y-4">
+        <Link
+          href="/sign-in"
+          className="block text-slate-600 hover:text-slate-800 font-medium transition-colors"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Sign In
+        </Link>
+        <Link href="/sign-up" onClick={() => setIsMobileMenuOpen(false)}>
+          <Button variant="primary" className="w-full">
+            Sign Up
+          </Button>
+        </Link>
+      </div>
+    );
+  };
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -40,7 +163,7 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -50,8 +173,12 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
+
+            {/* Auth Section */}
+            {renderAuthSection()}
+
             <Link href="/contact">
-              <Button variant="primary">Schedule a Viewing</Button>
+              <Button variant="secondary">Schedule a Viewing</Button>
             </Link>
           </div>
 
@@ -101,8 +228,12 @@ export function Header() {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Mobile Auth Section */}
+              {renderMobileAuthSection()}
+
               <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button variant="primary" className="w-full">
+                <Button variant="secondary" className="w-full">
                   Schedule a Viewing
                 </Button>
               </Link>

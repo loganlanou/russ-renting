@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { PropertyCard } from '@/components/property/PropertyCard';
 import { FeaturedCarousel } from '@/components/property/FeaturedCarousel';
+import { NewsletterSignup } from '@/components/ui/NewsletterSignup';
 import { getFeaturedProperties, properties } from '@/data/properties';
 
 export default function Home() {
@@ -220,6 +221,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Newsletter Signup Section */}
+      <NewsletterSignup />
 
       {/* Testimonials Section */}
       <section className="py-16 bg-slate-50">
