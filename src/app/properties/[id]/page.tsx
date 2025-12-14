@@ -7,8 +7,6 @@ import { getPropertyById, properties } from '@/data/properties';
 import {
   formatPrice,
   getPropertyTypeLabel,
-  getBedroomText,
-  getBathroomText,
 } from '@/lib/utils';
 
 interface PropertyPageProps {
@@ -99,7 +97,16 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 <div>
                   <h3 className="text-sm font-medium text-slate-500 mb-1">Pet Policy</h3>
                   <p className="text-slate-800">
-                    {property.petFriendly ? 'Pets Allowed' : 'No Pets'}
+                    {property.petFriendly ? (
+                      <span className="text-green-600">
+                        Pets Allowed
+                        {property.petDeposit && ` ($${property.petDeposit} deposit`}
+                        {property.petRent && `, $${property.petRent}/mo pet rent)`}
+                        {!property.petDeposit && !property.petRent && ''}
+                      </span>
+                    ) : (
+                      <span className="text-red-600">No Pets</span>
+                    )}
                   </p>
                 </div>
               </div>
@@ -135,6 +142,65 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 ))}
               </div>
             </div>
+
+            {/* Utilities & Lease Terms */}
+            {(property.utilities || property.leaseTerms) && (
+              <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-2xl font-bold text-slate-800 mb-4">Utilities & Lease Information</h2>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {property.utilities && property.utilities.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-slate-700 mb-3">Utilities</h3>
+                      <ul className="space-y-2">
+                        {property.utilities.map((utility, index) => (
+                          <li key={index} className="flex items-center text-slate-600">
+                            <svg
+                              className="w-4 h-4 text-amber-500 mr-2 flex-shrink-0"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 10V3L4 14h7v7l9-11h-7z"
+                              />
+                            </svg>
+                            {utility}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {property.leaseTerms && property.leaseTerms.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-slate-700 mb-3">Lease Terms</h3>
+                      <ul className="space-y-2">
+                        {property.leaseTerms.map((term, index) => (
+                          <li key={index} className="flex items-center text-slate-600">
+                            <svg
+                              className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                              />
+                            </svg>
+                            {term}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Location */}
             <div className="mt-8 bg-white rounded-lg shadow-md p-6">
@@ -178,7 +244,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             <div className="sticky top-24">
               <div className="bg-white rounded-lg shadow-md p-6">
                 {/* Price */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <p className="text-3xl font-bold text-slate-800">
                     {formatPrice(property.price)}
                     <span className="text-lg font-normal text-slate-500">/month</span>
@@ -192,7 +258,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 <p className="text-slate-500 mb-4">{property.address}</p>
 
                 {/* Quick Info */}
-                <div className="flex items-center justify-between border-t border-b py-4 mb-6">
+                <div className="flex items-center justify-between border-t border-b py-4 mb-4">
                   <div className="text-center">
                     <p className="text-2xl font-bold text-slate-800">
                       {property.bedrooms === 0 ? 'Studio' : property.bedrooms}
@@ -210,6 +276,48 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                       {property.squareFeet.toLocaleString()}
                     </p>
                     <p className="text-sm text-slate-500">Sqft</p>
+                  </div>
+                </div>
+
+                {/* Pricing Breakdown */}
+                <div className="mb-4 p-4 bg-slate-50 rounded-lg">
+                  <h3 className="font-semibold text-slate-800 mb-3">Move-In Costs</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Monthly Rent</span>
+                      <span className="font-medium text-slate-800">{formatPrice(property.price)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Security Deposit</span>
+                      <span className="font-medium text-slate-800">{formatPrice(property.deposit)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Application Fee</span>
+                      <span className="font-medium text-slate-800">${property.applicationFee}</span>
+                    </div>
+                    {property.petFriendly && property.petDeposit && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Pet Deposit</span>
+                        <span className="font-medium text-slate-800">${property.petDeposit}</span>
+                      </div>
+                    )}
+                    {property.petFriendly && property.petRent && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-600">Monthly Pet Rent</span>
+                        <span className="font-medium text-slate-800">${property.petRent}/mo</span>
+                      </div>
+                    )}
+                    <div className="border-t pt-2 mt-2">
+                      <div className="flex justify-between font-semibold">
+                        <span className="text-slate-700">Est. Move-In Total</span>
+                        <span className="text-amber-600">
+                          {formatPrice(property.price + property.deposit + property.applicationFee)}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-1">
+                        First month + deposit + application fee
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -251,12 +359,17 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
                 {/* Action Buttons */}
                 <div className="space-y-3">
-                  <Link href={`/contact?property=${property.id}`} className="block">
+                  <Link href={`/contact?property=${property.id}&action=viewing`} className="block">
                     <Button variant="primary" className="w-full">
                       Schedule a Viewing
                     </Button>
                   </Link>
-                  <Link href="/contact" className="block">
+                  <Link href={`/contact?property=${property.id}&action=apply`} className="block">
+                    <Button variant="outline" className="w-full">
+                      Apply Now
+                    </Button>
+                  </Link>
+                  <Link href={`/contact?property=${property.id}`} className="block">
                     <Button variant="outline" className="w-full">
                       Ask a Question
                     </Button>

@@ -5,33 +5,52 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { properties } from '@/data/properties';
+import { formatPrice } from '@/lib/utils';
 
 function ContactForm() {
   const searchParams = useSearchParams();
   const propertyId = searchParams.get('property');
+  const action = searchParams.get('action');
+
+  const selectedProperty = propertyId ? properties.find(p => p.id === propertyId) : null;
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     propertyInterest: '',
+    preferredDate: '',
+    preferredTime: '',
     message: '',
+    inquiryType: 'general',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    if (propertyId) {
-      const property = properties.find(p => p.id === propertyId);
-      if (property) {
-        setFormData(prev => ({
-          ...prev,
-          propertyInterest: property.title,
-          message: `I am interested in scheduling a viewing for ${property.title} at ${property.address}.`,
-        }));
+    if (selectedProperty) {
+      let messageText = '';
+      let inquiryType = 'general';
+
+      if (action === 'viewing') {
+        messageText = `I would like to schedule a viewing for ${selectedProperty.title} at ${selectedProperty.address}. Please let me know your available times.`;
+        inquiryType = 'viewing';
+      } else if (action === 'apply') {
+        messageText = `I am interested in applying for ${selectedProperty.title} at ${selectedProperty.address}. Please send me the application information.`;
+        inquiryType = 'application';
+      } else {
+        messageText = `I have a question about ${selectedProperty.title} at ${selectedProperty.address}.`;
+        inquiryType = 'general';
       }
+
+      setFormData(prev => ({
+        ...prev,
+        propertyInterest: selectedProperty.title,
+        message: messageText,
+        inquiryType: inquiryType,
+      }));
     }
-  }, [propertyId]);
+  }, [selectedProperty, action]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -57,9 +76,17 @@ function ContactForm() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="text-2xl font-bold text-slate-800 mb-2">Thank You!</h3>
+        <h3 className="text-2xl font-bold text-slate-800 mb-2">
+          {formData.inquiryType === 'viewing' ? 'Viewing Request Received!' :
+           formData.inquiryType === 'application' ? 'Application Request Received!' :
+           'Thank You!'}
+        </h3>
         <p className="text-slate-600 mb-6">
-          We have received your message and will get back to you within 24 hours.
+          {formData.inquiryType === 'viewing'
+            ? 'We will contact you within 24 hours to confirm your viewing appointment.'
+            : formData.inquiryType === 'application'
+            ? 'We will send you the application materials within 24 hours.'
+            : 'We have received your message and will get back to you within 24 hours.'}
         </p>
         <Button
           variant="outline"
@@ -70,7 +97,10 @@ function ContactForm() {
               email: '',
               phone: '',
               propertyInterest: '',
+              preferredDate: '',
+              preferredTime: '',
               message: '',
+              inquiryType: 'general',
             });
           }}
         >
@@ -82,6 +112,78 @@ function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Selected Property Card */}
+      {selectedProperty && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+          <div className="flex items-start gap-4">
+            <div className="relative w-24 h-20 rounded-md overflow-hidden flex-shrink-0">
+              <Image
+                src={selectedProperty.images[0].url}
+                alt={selectedProperty.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-slate-800 truncate">{selectedProperty.title}</h3>
+              <p className="text-sm text-slate-600 truncate">{selectedProperty.address}</p>
+              <p className="text-amber-600 font-semibold">{formatPrice(selectedProperty.price)}/month</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Inquiry Type */}
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">
+          What can we help you with?
+        </label>
+        <div className="grid grid-cols-3 gap-3">
+          <button
+            type="button"
+            onClick={() => setFormData(prev => ({ ...prev, inquiryType: 'viewing' }))}
+            className={`p-3 border rounded-lg text-center transition-colors ${
+              formData.inquiryType === 'viewing'
+                ? 'border-amber-500 bg-amber-50 text-amber-700'
+                : 'border-slate-200 hover:border-slate-300'
+            }`}
+          >
+            <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span className="text-sm font-medium">Schedule Viewing</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setFormData(prev => ({ ...prev, inquiryType: 'application' }))}
+            className={`p-3 border rounded-lg text-center transition-colors ${
+              formData.inquiryType === 'application'
+                ? 'border-amber-500 bg-amber-50 text-amber-700'
+                : 'border-slate-200 hover:border-slate-300'
+            }`}
+          >
+            <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span className="text-sm font-medium">Apply Now</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setFormData(prev => ({ ...prev, inquiryType: 'general' }))}
+            className={`p-3 border rounded-lg text-center transition-colors ${
+              formData.inquiryType === 'general'
+                ? 'border-amber-500 bg-amber-50 text-amber-700'
+                : 'border-slate-200 hover:border-slate-300'
+            }`}
+          >
+            <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-sm font-medium">Ask Question</span>
+          </button>
+        </div>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-6">
         {/* Name */}
         <div>
@@ -95,7 +197,7 @@ function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-colors"
+            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
             placeholder="John Doe"
           />
         </div>
@@ -112,7 +214,7 @@ function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-colors"
+            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
             placeholder="john@example.com"
           />
         </div>
@@ -122,7 +224,7 @@ function ContactForm() {
         {/* Phone */}
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1">
-            Phone Number
+            Phone Number *
           </label>
           <input
             type="tel"
@@ -130,7 +232,8 @@ function ContactForm() {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-colors"
+            required
+            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
             placeholder="(555) 123-4567"
           />
         </div>
@@ -145,17 +248,60 @@ function ContactForm() {
             name="propertyInterest"
             value={formData.propertyInterest}
             onChange={handleChange}
-            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-colors"
+            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
           >
             <option value="">Select a property (optional)</option>
             {properties.map(property => (
               <option key={property.id} value={property.title}>
-                {property.title} - {property.address}
+                {property.title} - {formatPrice(property.price)}/mo
               </option>
             ))}
           </select>
         </div>
       </div>
+
+      {/* Viewing Schedule Fields */}
+      {formData.inquiryType === 'viewing' && (
+        <div className="grid md:grid-cols-2 gap-6 p-4 bg-slate-50 rounded-lg">
+          <div>
+            <label htmlFor="preferredDate" className="block text-sm font-medium text-slate-700 mb-1">
+              Preferred Date
+            </label>
+            <input
+              type="date"
+              id="preferredDate"
+              name="preferredDate"
+              value={formData.preferredDate}
+              onChange={handleChange}
+              min={new Date().toISOString().split('T')[0]}
+              className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+            />
+          </div>
+          <div>
+            <label htmlFor="preferredTime" className="block text-sm font-medium text-slate-700 mb-1">
+              Preferred Time
+            </label>
+            <select
+              id="preferredTime"
+              name="preferredTime"
+              value={formData.preferredTime}
+              onChange={handleChange}
+              className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+            >
+              <option value="">Select a time</option>
+              <option value="9:00 AM">9:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="2:00 PM">2:00 PM</option>
+              <option value="3:00 PM">3:00 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="5:00 PM">5:00 PM</option>
+            </select>
+          </div>
+        </div>
+      )}
 
       {/* Message */}
       <div>
@@ -169,7 +315,7 @@ function ContactForm() {
           onChange={handleChange}
           required
           rows={5}
-          className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-colors resize-none"
+          className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors resize-none"
           placeholder="Tell us how we can help you..."
         />
       </div>
@@ -182,7 +328,10 @@ function ContactForm() {
         className="w-full"
         disabled={isSubmitting}
       >
-        {isSubmitting ? 'Sending...' : 'Send Message'}
+        {isSubmitting ? 'Sending...' :
+         formData.inquiryType === 'viewing' ? 'Request Viewing' :
+         formData.inquiryType === 'application' ? 'Request Application' :
+         'Send Message'}
       </Button>
 
       <p className="text-sm text-slate-500 text-center">

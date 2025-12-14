@@ -2,57 +2,128 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import { PropertyImage } from '@/types/property';
 
 interface PropertyGalleryProps {
-  images: string[];
+  images: PropertyImage[];
   title: string;
 }
+
+const roomLabels: Record<PropertyImage['room'], string> = {
+  exterior: 'Exterior',
+  living: 'Living Room',
+  kitchen: 'Kitchen',
+  bedroom: 'Bedroom',
+  bathroom: 'Bathroom',
+  dining: 'Dining Room',
+  backyard: 'Backyard',
+  garage: 'Garage',
+  other: 'Other',
+};
 
 export function PropertyGallery({ images, title }: PropertyGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filterRoom, setFilterRoom] = useState<PropertyImage['room'] | 'all'>('all');
+
+  const filteredImages = filterRoom === 'all'
+    ? images
+    : images.filter(img => img.room === filterRoom);
+
+  const uniqueRooms = Array.from(new Set(images.map(img => img.room)));
+
+  const currentImage = filteredImages[selectedImage] || images[0];
 
   return (
     <>
       <div className="space-y-4">
+        {/* Room Filter Tabs */}
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => { setFilterRoom('all'); setSelectedImage(0); }}
+            className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
+              filterRoom === 'all'
+                ? 'bg-slate-800 text-white'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            All Photos ({images.length})
+          </button>
+          {uniqueRooms.map((room) => (
+            <button
+              key={room}
+              onClick={() => { setFilterRoom(room); setSelectedImage(0); }}
+              className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
+                filterRoom === room
+                  ? 'bg-slate-800 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              {roomLabels[room]} ({images.filter(img => img.room === room).length})
+            </button>
+          ))}
+        </div>
+
         {/* Main Image */}
         <div
-          className="relative h-96 md:h-[500px] rounded-lg overflow-hidden cursor-pointer"
+          className="relative h-96 md:h-[500px] rounded-lg overflow-hidden cursor-pointer group"
           onClick={() => setIsModalOpen(true)}
         >
           <Image
-            src={images[selectedImage]}
-            alt={`${title} - Image ${selectedImage + 1}`}
+            src={currentImage.url}
+            alt={`${title} - ${currentImage.caption}`}
             fill
             className="object-cover"
             priority
             sizes="(max-width: 768px) 100vw, 66vw"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-colors flex items-center justify-center">
-            <span className="opacity-0 hover:opacity-100 text-white bg-black bg-opacity-50 px-4 py-2 rounded-lg transition-opacity">
+          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-colors" />
+
+          {/* Caption Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+            <p className="text-white text-sm font-medium">{currentImage.caption}</p>
+            <p className="text-white/70 text-xs">{roomLabels[currentImage.room]}</p>
+          </div>
+
+          {/* Click to enlarge hint */}
+          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="text-white bg-black/50 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+              </svg>
               Click to enlarge
             </span>
+          </div>
+
+          {/* Image counter */}
+          <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-lg text-sm">
+            {selectedImage + 1} / {filteredImages.length}
           </div>
         </div>
 
         {/* Thumbnail Strip */}
-        {images.length > 1 && (
-          <div className="flex space-x-2 overflow-x-auto pb-2">
-            {images.map((image, index) => (
+        {filteredImages.length > 1 && (
+          <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-thin">
+            {filteredImages.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(index)}
-                className={`relative w-24 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-colors ${
-                  selectedImage === index ? 'border-amber-600' : 'border-transparent hover:border-slate-300'
+                className={`relative w-24 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-all ${
+                  selectedImage === index
+                    ? 'border-amber-500 ring-2 ring-amber-500/30'
+                    : 'border-transparent hover:border-slate-300'
                 }`}
               >
                 <Image
-                  src={image}
-                  alt={`${title} - Thumbnail ${index + 1}`}
+                  src={image.url}
+                  alt={`${title} - ${image.caption}`}
                   fill
                   className="object-cover"
                   sizes="96px"
                 />
+                {selectedImage === index && (
+                  <div className="absolute inset-0 bg-amber-500/10" />
+                )}
               </button>
             ))}
           </div>
@@ -62,11 +133,12 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
       {/* Modal */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center"
           onClick={() => setIsModalOpen(false)}
         >
+          {/* Close button */}
           <button
-            className="absolute top-4 right-4 text-white hover:text-slate-300 transition-colors"
+            className="absolute top-4 right-4 text-white hover:text-slate-300 transition-colors z-10"
             onClick={() => setIsModalOpen(false)}
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,11 +146,12 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             </svg>
           </button>
 
+          {/* Previous button */}
           <button
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-slate-300 transition-colors p-2"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-slate-300 transition-colors p-2 bg-black/30 rounded-full hover:bg-black/50"
             onClick={(e) => {
               e.stopPropagation();
-              setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+              setSelectedImage((prev) => (prev === 0 ? filteredImages.length - 1 : prev - 1));
             }}
           >
             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,21 +159,26 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             </svg>
           </button>
 
-          <div className="relative max-w-5xl max-h-[80vh] w-full h-full">
+          {/* Main image */}
+          <div
+            className="relative max-w-6xl max-h-[85vh] w-full h-full mx-16"
+            onClick={(e) => e.stopPropagation()}
+          >
             <Image
-              src={images[selectedImage]}
-              alt={`${title} - Image ${selectedImage + 1}`}
+              src={filteredImages[selectedImage].url}
+              alt={`${title} - ${filteredImages[selectedImage].caption}`}
               fill
               className="object-contain"
               sizes="100vw"
             />
           </div>
 
+          {/* Next button */}
           <button
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-slate-300 transition-colors p-2"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-slate-300 transition-colors p-2 bg-black/30 rounded-full hover:bg-black/50"
             onClick={(e) => {
               e.stopPropagation();
-              setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+              setSelectedImage((prev) => (prev === filteredImages.length - 1 ? 0 : prev + 1));
             }}
           >
             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,8 +186,40 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             </svg>
           </button>
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white">
-            {selectedImage + 1} / {images.length}
+          {/* Caption and counter */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
+            <p className="text-white text-lg font-medium mb-1">
+              {filteredImages[selectedImage].caption}
+            </p>
+            <p className="text-white/60 text-sm">
+              {selectedImage + 1} / {filteredImages.length} • {roomLabels[filteredImages[selectedImage].room]}
+            </p>
+          </div>
+
+          {/* Thumbnail strip in modal */}
+          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-2 max-w-3xl overflow-x-auto p-2">
+            {filteredImages.map((image, index) => (
+              <button
+                key={index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedImage(index);
+                }}
+                className={`relative w-16 h-12 flex-shrink-0 rounded overflow-hidden transition-all ${
+                  selectedImage === index
+                    ? 'ring-2 ring-amber-500 opacity-100'
+                    : 'opacity-50 hover:opacity-75'
+                }`}
+              >
+                <Image
+                  src={image.url}
+                  alt={`Thumbnail ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="64px"
+                />
+              </button>
+            ))}
           </div>
         </div>
       )}

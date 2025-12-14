@@ -14,12 +14,19 @@ export function PropertyCard({ property }: PropertyCardProps) {
         {/* Image */}
         <div className="relative h-56 overflow-hidden">
           <Image
-            src={property.images[0]}
+            src={property.images[0].url}
             alt={property.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
+          {/* Photo count indicator */}
+          <div className="absolute bottom-4 right-4 bg-black/60 text-white px-2 py-1 rounded text-xs flex items-center">
+            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {property.images.length} photos
+          </div>
           {/* Property Type Badge */}
           <div className="absolute top-4 left-4">
             <span className="bg-slate-800 text-white px-3 py-1 rounded-full text-sm font-medium">
