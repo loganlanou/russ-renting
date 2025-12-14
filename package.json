@@ -9,11 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.36.2",
     "next": "16.0.8",
     "react": "19.2.1",
-    "react-dom": "19.2.1",
-    "resend": "^6.6.0"
+    "react-dom": "19.2.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

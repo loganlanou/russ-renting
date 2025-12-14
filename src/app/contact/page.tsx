@@ -26,7 +26,6 @@ function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     if (selectedProperty) {
@@ -58,41 +57,38 @@ function ContactForm() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError('');
 
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          propertyInterest: formData.propertyInterest,
-          inquiryType: formData.inquiryType === 'viewing' ? 'Schedule Viewing' :
-                       formData.inquiryType === 'application' ? 'Apply for Property' :
-                       'General Inquiry',
-          message: formData.message,
-          preferredDate: formData.preferredDate,
-          preferredTime: formData.preferredTime,
-        }),
-      });
+    // Build email body
+    const inquiryTypeLabel = formData.inquiryType === 'viewing' ? 'Schedule Viewing' :
+                             formData.inquiryType === 'application' ? 'Apply for Property' :
+                             'General Inquiry';
 
-      const data = await response.json();
-
-      if (data.success) {
-        setIsSubmitted(true);
-      } else {
-        setError(data.message || 'Something went wrong. Please try again.');
-      }
-    } catch {
-      setError('Failed to send message. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+    let emailBody = `Name: ${formData.name}\n`;
+    emailBody += `Email: ${formData.email}\n`;
+    emailBody += `Phone: ${formData.phone}\n`;
+    emailBody += `Inquiry Type: ${inquiryTypeLabel}\n`;
+    if (formData.propertyInterest) {
+      emailBody += `Property Interest: ${formData.propertyInterest}\n`;
     }
+    if (formData.preferredDate) {
+      emailBody += `Preferred Date: ${formData.preferredDate}\n`;
+    }
+    if (formData.preferredTime) {
+      emailBody += `Preferred Time: ${formData.preferredTime}\n`;
+    }
+    emailBody += `\nMessage:\n${formData.message}`;
+
+    const subject = encodeURIComponent(`${inquiryTypeLabel} - ${formData.name}`);
+    const body = encodeURIComponent(emailBody);
+
+    // Open mailto link
+    window.location.href = `mailto:info@russrentals.com?subject=${subject}&body=${body}`;
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
   };
 
   if (isSubmitted) {
@@ -119,7 +115,6 @@ function ContactForm() {
           variant="outline"
           onClick={() => {
             setIsSubmitted(false);
-            setError('');
             setFormData({
               name: '',
               email: '',
@@ -347,13 +342,6 @@ function ContactForm() {
           placeholder="Tell us how we can help you..."
         />
       </div>
-
-      {/* Error Message */}
-      {error && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
-          {error}
-        </div>
-      )}
 
       {/* Submit Button */}
       <Button

@@ -1,20 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Enable static export for fast, pre-rendered pages
+  output: 'export',
+
+  // Disable image optimization for static export (use native img or optimized sources)
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'img.clerk.com',
-        pathname: '/**',
-      },
-    ],
+    unoptimized: true,
   },
+
+  // Generate trailing slashes for cleaner URLs
+  trailingSlash: true,
+
+  // Disable powered by header
+  poweredByHeader: false,
 };
 
 export default nextConfig;

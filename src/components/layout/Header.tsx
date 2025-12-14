@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton, isClerkConfigured } from '@/components/auth/AuthComponents';
 import { Button } from '@/components/ui/Button';
 
 export function Header() {
@@ -51,49 +50,13 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
-
-            {/* Auth Section */}
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
-                  Sign In
-                </button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="bg-amber-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-amber-700 transition-all duration-300">
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </SignedOut>
-
-            <SignedIn>
-              <UserButton
-                afterSignOutUrl="/"
-                appearance={{
-                  elements: {
-                    avatarBox: 'w-10 h-10'
-                  }
-                }}
-              />
-            </SignedIn>
-
             <Link href="/contact">
               <Button variant="primary">Schedule a Viewing</Button>
             </Link>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <SignedIn>
-              <UserButton
-                afterSignOutUrl="/"
-                appearance={{
-                  elements: {
-                    avatarBox: 'w-8 h-8'
-                  }
-                }}
-              />
-            </SignedIn>
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-slate-600 hover:text-slate-800 focus:outline-none"
@@ -138,28 +101,6 @@ export function Header() {
                   {item.name}
                 </Link>
               ))}
-
-              <SignedOut>
-                <div className="flex flex-col space-y-2 pt-2 border-t border-slate-200">
-                  <SignInButton mode="modal">
-                    <button
-                      className="text-slate-600 hover:text-slate-800 font-medium transition-colors text-left"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Sign In
-                    </button>
-                  </SignInButton>
-                  <SignUpButton mode="modal">
-                    <button
-                      className="bg-amber-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-amber-700 transition-all duration-300 text-center"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Sign Up
-                    </button>
-                  </SignUpButton>
-                </div>
-              </SignedOut>
-
               <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button variant="primary" className="w-full">
                   Schedule a Viewing
