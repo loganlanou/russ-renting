@@ -25,6 +25,7 @@ export interface Property {
   yearBuilt?: number;
   utilities?: string[];
   leaseTerms?: string[];
+  featured?: boolean;
 }
 
 export interface PropertyImage {

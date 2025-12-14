@@ -2,53 +2,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { PropertyCard } from '@/components/property/PropertyCard';
-import { getFeaturedProperties } from '@/data/properties';
+import { FeaturedCarousel } from '@/components/property/FeaturedCarousel';
+import { getFeaturedProperties, properties } from '@/data/properties';
 
 export default function Home() {
   const featuredProperties = getFeaturedProperties(3);
+  // Use featured properties if available, otherwise use first 5 properties
+  const carouselProperties = properties.filter(p => p.featured).length > 0
+    ? properties.filter(p => p.featured).slice(0, 5)
+    : properties.slice(0, 5);
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative h-[600px] md:h-[700px]">
-        <Image
-          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920"
-          alt="Beautiful rental property"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/40" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Find Your Perfect
-              <span className="text-amber-500"> Rental Home</span>
-            </h1>
-            <p className="text-lg md:text-xl text-slate-200 mb-8">
-              Quality houses, apartments, and duplexes with exceptional service.
-              We make finding your next home simple and stress-free.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/properties">
-                <Button variant="secondary" size="lg">
-                  Browse Properties
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-slate-800">
-                  Contact Us
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Carousel */}
+      <FeaturedCarousel properties={carouselProperties} />
 
       {/* Property Types Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+      <section className="py-16 bg-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-100 rounded-full opacity-30 blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-12 animate-slideUp">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
               Property Types
             </h2>
@@ -59,7 +33,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Houses */}
-            <div className="group relative h-80 rounded-xl overflow-hidden shadow-lg">
+            <div className="group relative h-80 rounded-xl overflow-hidden shadow-lg property-card">
               <Image
                 src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800"
                 alt="Houses for rent"
@@ -77,7 +51,7 @@ export default function Home() {
             </div>
 
             {/* Apartments */}
-            <div className="group relative h-80 rounded-xl overflow-hidden shadow-lg">
+            <div className="group relative h-80 rounded-xl overflow-hidden shadow-lg property-card">
               <Image
                 src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"
                 alt="Apartments for rent"
@@ -95,7 +69,7 @@ export default function Home() {
             </div>
 
             {/* Duplexes */}
-            <div className="group relative h-80 rounded-xl overflow-hidden shadow-lg">
+            <div className="group relative h-80 rounded-xl overflow-hidden shadow-lg property-card">
               <Image
                 src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800"
                 alt="Duplexes for rent"
@@ -145,11 +119,13 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+      <section className="py-16 bg-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-slate-100 rounded-full opacity-50 blur-3xl translate-y-1/2 -translate-x-1/2" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-12 animate-slideUp">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-              Why Choose Russ Rentals?
+              Why Choose <span className="text-gradient">Russ Rentals</span>?
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               We are committed to providing exceptional service and quality properties
@@ -158,7 +134,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Quality Properties */}
-            <div className="text-center p-6">
+            <div className="text-center p-6 bg-white rounded-xl feature-card shadow-sm border border-slate-100">
               <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -171,7 +147,7 @@ export default function Home() {
             </div>
 
             {/* Responsive Service */}
-            <div className="text-center p-6">
+            <div className="text-center p-6 bg-white rounded-xl feature-card shadow-sm border border-slate-100">
               <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -184,7 +160,7 @@ export default function Home() {
             </div>
 
             {/* Transparent Pricing */}
-            <div className="text-center p-6">
+            <div className="text-center p-6 bg-white rounded-xl feature-card shadow-sm border border-slate-100">
               <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -197,7 +173,7 @@ export default function Home() {
             </div>
 
             {/* Easy Application */}
-            <div className="text-center p-6">
+            <div className="text-center p-6 bg-white rounded-xl feature-card shadow-sm border border-slate-100">
               <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -213,12 +189,17 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 bg-slate-800 relative overflow-hidden">
+        {/* Background decorations */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500 rounded-full opacity-10 blur-3xl animate-pulse-slow" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-amber-400 rounded-full opacity-10 blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="text-center md:text-left mb-8 md:mb-0">
+            <div className="text-center md:text-left mb-8 md:mb-0 animate-slideUp">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Ready to Find Your New Home?
+                Ready to Find Your <span className="text-gradient-amber">New Home</span>?
               </h2>
               <p className="text-lg text-slate-300 max-w-xl">
                 Contact us today to schedule a viewing or learn more about our available properties.
@@ -226,12 +207,12 @@ export default function Home() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/properties">
-                <Button variant="secondary" size="lg">
+                <Button variant="secondary" size="lg" className="btn-scale">
                   View Properties
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-slate-800">
+                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-slate-800 btn-scale">
                   Get in Touch
                 </Button>
               </Link>
@@ -243,7 +224,7 @@ export default function Home() {
       {/* Testimonials Section */}
       <section className="py-16 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-slideUp">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
               What Our Tenants Say
             </h2>
@@ -253,7 +234,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Testimonial 1 */}
-            <div className="bg-white p-8 rounded-xl shadow-md">
+            <div className="bg-white p-8 rounded-xl shadow-md feature-card">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
                   <svg key={i} className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
@@ -277,7 +258,7 @@ export default function Home() {
             </div>
 
             {/* Testimonial 2 */}
-            <div className="bg-white p-8 rounded-xl shadow-md">
+            <div className="bg-white p-8 rounded-xl shadow-md feature-card">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
                   <svg key={i} className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
@@ -301,7 +282,7 @@ export default function Home() {
             </div>
 
             {/* Testimonial 3 */}
-            <div className="bg-white p-8 rounded-xl shadow-md">
+            <div className="bg-white p-8 rounded-xl shadow-md feature-card">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
                   <svg key={i} className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
