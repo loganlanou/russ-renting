@@ -1,0 +1,190 @@
+package pages
+
+import (
+	"russ-rentals/internal/models"
+	"russ-rentals/templates/layouts"
+	"russ-rentals/templates/components"
+)
+
+templ Home(isAuthenticated bool) {
+	@layouts.Base("Find Your Perfect Rental Home", "Find your perfect rental home with Russ Rentals. Quality houses, apartments, and duplexes in Springfield, IL with professional management.", isAuthenticated) {
+		<!-- Hero Carousel -->
+		@components.FeaturedCarousel(getFeaturedProperties())
+
+		<!-- Why Choose Us -->
+		<section class="py-16 bg-white">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="text-center mb-12">
+					<h2 class="text-3xl font-bold text-slate-800 mb-4">Why Choose Russ Rentals?</h2>
+					<p class="text-slate-600 max-w-2xl mx-auto">
+						We're committed to providing quality rental properties with exceptional service.
+					</p>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					@FeatureCard(
+						"Quality Properties",
+						"All our properties are carefully maintained and updated to provide comfortable, modern living spaces.",
+						IconHome(),
+					)
+					@FeatureCard(
+						"Responsive Management",
+						"Our team is available to address maintenance requests and concerns promptly and professionally.",
+						IconSupport(),
+					)
+					@FeatureCard(
+						"Transparent Process",
+						"Clear pricing, straightforward lease terms, and honest communication throughout your tenancy.",
+						IconDocument(),
+					)
+				</div>
+			</div>
+		</section>
+
+		<!-- Featured Properties -->
+		<section class="py-16 bg-slate-50">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="text-center mb-12">
+					<h2 class="text-3xl font-bold text-slate-800 mb-4">Featured Properties</h2>
+					<p class="text-slate-600 max-w-2xl mx-auto">
+						Explore our selection of quality rental homes available now.
+					</p>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					for _, p := range getFeaturedProperties() {
+						@components.PropertyCard(p)
+					}
+				</div>
+
+				<div class="text-center mt-12">
+					<a
+						href="/properties"
+						class="inline-block bg-slate-800 text-white px-8 py-3 rounded-md font-medium hover:bg-slate-700 transition-colors btn-scale"
+					>
+						View All Properties
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Testimonials -->
+		@components.Testimonials()
+
+		<!-- CTA Section -->
+		<section class="py-16 bg-gradient-to-r from-slate-800 to-slate-900">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+				<h2 class="text-3xl font-bold text-white mb-4">Ready to Find Your New Home?</h2>
+				<p class="text-slate-300 mb-8 max-w-2xl mx-auto">
+					Browse our available properties or contact us today to learn more about our rental homes.
+				</p>
+				<div class="flex flex-col sm:flex-row justify-center gap-4">
+					<a
+						href="/properties"
+						class="bg-amber-500 text-white px-8 py-3 rounded-md font-medium hover:bg-amber-600 transition-colors btn-scale"
+					>
+						Browse Properties
+					</a>
+					<a
+						href="/contact"
+						class="border-2 border-white text-white px-8 py-3 rounded-md font-medium hover:bg-white hover:text-slate-800 transition-colors"
+					>
+						Contact Us
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Newsletter -->
+		@components.Newsletter()
+	}
+}
+
+templ FeatureCard(title string, description string, icon templ.Component) {
+	<div class="bg-slate-50 rounded-lg p-6 text-center feature-card">
+		<div class="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+			@icon
+		</div>
+		<h3 class="text-xl font-semibold text-slate-800 mb-2">{ title }</h3>
+		<p class="text-slate-600">{ description }</p>
+	</div>
+}
+
+templ IconHome() {
+	<svg class="w-7 h-7 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+	</svg>
+}
+
+templ IconSupport() {
+	<svg class="w-7 h-7 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+	</svg>
+}
+
+templ IconDocument() {
+	<svg class="w-7 h-7 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+	</svg>
+}
+
+// Helper to get featured properties for home page
+func getFeaturedProperties() []models.Property {
+	// This is a temporary solution - will be replaced with handler passing data
+	return []models.Property{
+		{
+			ID:       1,
+			Slug:     "spacious-family-home",
+			Title:    "Spacious Family Home",
+			Type:     models.PropertyTypeHouse,
+			Address:  "123 Oak Street",
+			City:     "Springfield",
+			State:    "IL",
+			Price:    1850,
+			Bedrooms: 4,
+			Bathrooms: 2.5,
+			SquareFeet: 2200,
+			Available: true,
+			Featured:  true,
+			Images: []models.PropertyImage{
+				{URL: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200", Caption: "Front exterior view", Room: models.RoomTypeExterior},
+			},
+		},
+		{
+			ID:       2,
+			Slug:     "modern-downtown-apartment",
+			Title:    "Modern Downtown Apartment",
+			Type:     models.PropertyTypeApartment,
+			Address:  "456 Main Avenue, Unit 5B",
+			City:     "Springfield",
+			State:    "IL",
+			Price:    1200,
+			Bedrooms: 2,
+			Bathrooms: 1,
+			SquareFeet: 950,
+			Available: true,
+			Featured:  true,
+			Images: []models.PropertyImage{
+				{URL: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200", Caption: "Open concept living space", Room: models.RoomTypeLiving},
+			},
+		},
+		{
+			ID:       3,
+			Slug:     "charming-duplex-unit",
+			Title:    "Charming Duplex Unit",
+			Type:     models.PropertyTypeDuplex,
+			Address:  "789 Elm Street, Unit A",
+			City:     "Springfield",
+			State:    "IL",
+			Price:    1450,
+			Bedrooms: 3,
+			Bathrooms: 2,
+			SquareFeet: 1400,
+			Available: true,
+			Featured:  true,
+			Images: []models.PropertyImage{
+				{URL: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200", Caption: "Front of duplex unit", Room: models.RoomTypeExterior},
+			},
+		},
+	}
+}

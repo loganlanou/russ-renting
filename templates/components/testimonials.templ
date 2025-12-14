@@ -1,0 +1,46 @@
+package components
+
+templ Testimonials() {
+	<section class="py-16 bg-white">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-12">
+				<h2 class="text-3xl font-bold text-slate-800 mb-4">What Our Tenants Say</h2>
+				<p class="text-slate-600 max-w-2xl mx-auto">
+					Don't just take our word for it. Here's what our happy tenants have to say about their experience with Russ Rentals.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+				@TestimonialCard(
+					"Sarah M.",
+					"The team at Russ Rentals made finding my first apartment so easy. The application process was smooth, and they were very responsive to all my questions.",
+					"5",
+				)
+				@TestimonialCard(
+					"Michael T.",
+					"Best rental experience I've ever had. Maintenance requests are handled quickly, and the property is well-maintained. Highly recommend!",
+					"5",
+				)
+				@TestimonialCard(
+					"Jennifer L.",
+					"We've been renting from Russ Rentals for three years now. The staff is friendly, professional, and always helpful. Love our home!",
+					"5",
+				)
+			</div>
+		</div>
+	</section>
+}
+
+templ TestimonialCard(name, text, rating string) {
+	<div class="bg-slate-50 rounded-lg p-6 feature-card">
+		<div class="flex items-center mb-4">
+			for i := 0; i < 5; i++ {
+				<svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+					<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+				</svg>
+			}
+		</div>
+		<p class="text-slate-600 mb-4 italic">"{ text }"</p>
+		<p class="font-semibold text-slate-800">{ name }</p>
+	</div>
+}

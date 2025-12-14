@@ -42,3 +42,25 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# Go
+/bin/
+/tmp/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+go.work.sum
+
+# Templ generated files
+*_templ.go
+
+# Air
+build-errors.log
+
+# Compiled CSS (generated)
+static/css/styles.css

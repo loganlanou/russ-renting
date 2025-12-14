@@ -1,0 +1,93 @@
+package components
+
+templ PropertyFilter(selectedType, minPrice, maxPrice, bedrooms string) {
+	<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+		<h2 class="text-lg font-semibold text-slate-800 mb-4">Filter Properties</h2>
+		<form
+			hx-get="/properties/filter"
+			hx-target="#property-grid"
+			hx-swap="innerHTML"
+			hx-trigger="change from:select, click from:#apply-filters"
+			hx-indicator="#filter-loading"
+		>
+			<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+				<!-- Property Type -->
+				<div>
+					<label for="type" class="block text-sm font-medium text-slate-700 mb-1">
+						Property Type
+					</label>
+					<select id="type" name="type" class="w-full border border-slate-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+						<option value="" selected?={ selectedType == "" }>All Types</option>
+						<option value="house" selected?={ selectedType == "house" }>House</option>
+						<option value="apartment" selected?={ selectedType == "apartment" }>Apartment</option>
+						<option value="duplex" selected?={ selectedType == "duplex" }>Duplex</option>
+					</select>
+				</div>
+				<!-- Min Price -->
+				<div>
+					<label for="minPrice" class="block text-sm font-medium text-slate-700 mb-1">
+						Min Price
+					</label>
+					<select id="minPrice" name="minPrice" class="w-full border border-slate-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+						<option value="" selected?={ minPrice == "" }>No Min</option>
+						<option value="500" selected?={ minPrice == "500" }>$500</option>
+						<option value="750" selected?={ minPrice == "750" }>$750</option>
+						<option value="1000" selected?={ minPrice == "1000" }>$1,000</option>
+						<option value="1500" selected?={ minPrice == "1500" }>$1,500</option>
+						<option value="2000" selected?={ minPrice == "2000" }>$2,000</option>
+					</select>
+				</div>
+				<!-- Max Price -->
+				<div>
+					<label for="maxPrice" class="block text-sm font-medium text-slate-700 mb-1">
+						Max Price
+					</label>
+					<select id="maxPrice" name="maxPrice" class="w-full border border-slate-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+						<option value="" selected?={ maxPrice == "" }>No Max</option>
+						<option value="1000" selected?={ maxPrice == "1000" }>$1,000</option>
+						<option value="1500" selected?={ maxPrice == "1500" }>$1,500</option>
+						<option value="2000" selected?={ maxPrice == "2000" }>$2,000</option>
+						<option value="2500" selected?={ maxPrice == "2500" }>$2,500</option>
+						<option value="3000" selected?={ maxPrice == "3000" }>$3,000</option>
+						<option value="3500" selected?={ maxPrice == "3500" }>$3,500</option>
+					</select>
+				</div>
+				<!-- Bedrooms -->
+				<div>
+					<label for="bedrooms" class="block text-sm font-medium text-slate-700 mb-1">
+						Bedrooms
+					</label>
+					<select id="bedrooms" name="bedrooms" class="w-full border border-slate-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+						<option value="" selected?={ bedrooms == "" }>Any</option>
+						<option value="0" selected?={ bedrooms == "0" }>Studio</option>
+						<option value="1" selected?={ bedrooms == "1" }>1+</option>
+						<option value="2" selected?={ bedrooms == "2" }>2+</option>
+						<option value="3" selected?={ bedrooms == "3" }>3+</option>
+						<option value="4" selected?={ bedrooms == "4" }>4+</option>
+					</select>
+				</div>
+			</div>
+			<div class="flex justify-end space-x-3 mt-4">
+				<button
+					type="button"
+					hx-get="/properties/filter"
+					hx-target="#property-grid"
+					hx-vals='{"type":"","minPrice":"","maxPrice":"","bedrooms":""}'
+					class="px-4 py-2 text-sm border-2 border-slate-800 text-slate-800 rounded-md hover:bg-slate-800 hover:text-white transition-colors"
+				>
+					Clear Filters
+				</button>
+				<button
+					id="apply-filters"
+					type="submit"
+					class="px-4 py-2 text-sm bg-slate-800 text-white rounded-md hover:bg-slate-700 transition-colors"
+				>
+					Apply Filters
+				</button>
+			</div>
+		</form>
+		<div id="filter-loading" class="htmx-indicator text-center py-4">
+			<span class="text-slate-500">Loading...</span>
+		</div>
+	</div>
+}

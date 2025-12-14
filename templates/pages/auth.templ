@@ -1,0 +1,234 @@
+package pages
+
+import (
+	"russ-rentals/templates/layouts"
+)
+
+templ SignIn(clerkPublishableKey string) {
+	@layouts.Base("Sign In", "Sign in to your Russ Rentals tenant account to manage your rental, pay rent, and submit maintenance requests.", false) {
+		<section class="py-16 min-h-[60vh] flex items-center">
+			<div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 w-full">
+				<div class="text-center mb-8">
+					<div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+						<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+						</svg>
+					</div>
+					<h1 class="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
+					<p class="text-slate-600">Sign in to your tenant account</p>
+				</div>
+
+				<div class="bg-white rounded-lg shadow-md p-8">
+					<!-- Clerk Sign In Component will be mounted here -->
+					<div id="clerk-sign-in">
+						if clerkPublishableKey != "" {
+							<p class="text-center text-slate-500 py-8">Loading sign in...</p>
+						} else {
+							<!-- Fallback form when Clerk is not configured -->
+							<form class="space-y-4">
+								<div>
+									<label for="email" class="block text-sm font-medium text-slate-700 mb-1">
+										Email Address
+									</label>
+									<input
+										type="email"
+										id="email"
+										name="email"
+										required
+										class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+										placeholder="you@example.com"
+									/>
+								</div>
+								<div>
+									<label for="password" class="block text-sm font-medium text-slate-700 mb-1">
+										Password
+									</label>
+									<input
+										type="password"
+										id="password"
+										name="password"
+										required
+										class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+										placeholder="Enter your password"
+									/>
+								</div>
+								<div class="flex items-center justify-between">
+									<label class="flex items-center">
+										<input type="checkbox" class="mr-2 rounded text-amber-500 focus:ring-amber-500"/>
+										<span class="text-sm text-slate-600">Remember me</span>
+									</label>
+									<a href="#" class="text-sm text-amber-600 hover:text-amber-700">Forgot password?</a>
+								</div>
+								<button
+									type="submit"
+									class="w-full bg-slate-800 text-white px-4 py-2 rounded-md font-medium hover:bg-slate-700 transition-colors"
+								>
+									Sign In
+								</button>
+							</form>
+							<p class="text-center text-sm text-slate-500 mt-6">
+								Clerk authentication is not configured.
+								<br/>
+								Please set <code class="bg-slate-100 px-1 rounded">CLERK_PUBLISHABLE_KEY</code> environment variable.
+							</p>
+						}
+					</div>
+
+					<div class="mt-6 text-center">
+						<p class="text-slate-600">
+							Don't have an account?
+							<a href="/sign-up" class="text-amber-600 hover:text-amber-700 font-medium">
+								Sign up
+							</a>
+						</p>
+					</div>
+				</div>
+
+				<p class="text-center text-sm text-slate-500 mt-6">
+					By signing in, you agree to our
+					<a href="#" class="text-amber-600 hover:text-amber-700">Terms of Service</a>
+					and
+					<a href="#" class="text-amber-600 hover:text-amber-700">Privacy Policy</a>.
+				</p>
+			</div>
+		</section>
+
+		if clerkPublishableKey != "" {
+			<script>
+				// Initialize Clerk when available
+				window.addEventListener('load', function() {
+					if (window.Clerk) {
+						const signIn = document.getElementById('clerk-sign-in');
+						signIn.innerHTML = '';
+						window.Clerk.mountSignIn(signIn);
+					}
+				});
+			</script>
+		}
+	}
+}
+
+templ SignUp(clerkPublishableKey string) {
+	@layouts.Base("Sign Up", "Create a Russ Rentals tenant account to access your rental dashboard, pay rent online, and submit maintenance requests.", false) {
+		<section class="py-16 min-h-[60vh] flex items-center">
+			<div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 w-full">
+				<div class="text-center mb-8">
+					<div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+						<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+						</svg>
+					</div>
+					<h1 class="text-3xl font-bold text-slate-800 mb-2">Create Account</h1>
+					<p class="text-slate-600">Join Russ Rentals as a tenant</p>
+				</div>
+
+				<div class="bg-white rounded-lg shadow-md p-8">
+					<!-- Clerk Sign Up Component will be mounted here -->
+					<div id="clerk-sign-up">
+						if clerkPublishableKey != "" {
+							<p class="text-center text-slate-500 py-8">Loading sign up...</p>
+						} else {
+							<!-- Fallback form when Clerk is not configured -->
+							<form class="space-y-4">
+								<div class="grid grid-cols-2 gap-4">
+									<div>
+										<label for="firstName" class="block text-sm font-medium text-slate-700 mb-1">
+											First Name
+										</label>
+										<input
+											type="text"
+											id="firstName"
+											name="firstName"
+											required
+											class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+											placeholder="John"
+										/>
+									</div>
+									<div>
+										<label for="lastName" class="block text-sm font-medium text-slate-700 mb-1">
+											Last Name
+										</label>
+										<input
+											type="text"
+											id="lastName"
+											name="lastName"
+											required
+											class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+											placeholder="Doe"
+										/>
+									</div>
+								</div>
+								<div>
+									<label for="email" class="block text-sm font-medium text-slate-700 mb-1">
+										Email Address
+									</label>
+									<input
+										type="email"
+										id="email"
+										name="email"
+										required
+										class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+										placeholder="you@example.com"
+									/>
+								</div>
+								<div>
+									<label for="password" class="block text-sm font-medium text-slate-700 mb-1">
+										Password
+									</label>
+									<input
+										type="password"
+										id="password"
+										name="password"
+										required
+										class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+										placeholder="Create a password"
+									/>
+								</div>
+								<button
+									type="submit"
+									class="w-full bg-slate-800 text-white px-4 py-2 rounded-md font-medium hover:bg-slate-700 transition-colors"
+								>
+									Create Account
+								</button>
+							</form>
+							<p class="text-center text-sm text-slate-500 mt-6">
+								Clerk authentication is not configured.
+								<br/>
+								Please set <code class="bg-slate-100 px-1 rounded">CLERK_PUBLISHABLE_KEY</code> environment variable.
+							</p>
+						}
+					</div>
+
+					<div class="mt-6 text-center">
+						<p class="text-slate-600">
+							Already have an account?
+							<a href="/sign-in" class="text-amber-600 hover:text-amber-700 font-medium">
+								Sign in
+							</a>
+						</p>
+					</div>
+				</div>
+
+				<p class="text-center text-sm text-slate-500 mt-6">
+					By creating an account, you agree to our
+					<a href="#" class="text-amber-600 hover:text-amber-700">Terms of Service</a>
+					and
+					<a href="#" class="text-amber-600 hover:text-amber-700">Privacy Policy</a>.
+				</p>
+			</div>
+		</section>
+
+		if clerkPublishableKey != "" {
+			<script>
+				// Initialize Clerk when available
+				window.addEventListener('load', function() {
+					if (window.Clerk) {
+						const signUp = document.getElementById('clerk-sign-up');
+						signUp.innerHTML = '';
+						window.Clerk.mountSignUp(signUp);
+					}
+				});
+			</script>
+		}
+	}
+}

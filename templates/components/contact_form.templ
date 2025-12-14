@@ -1,0 +1,219 @@
+package components
+
+import (
+	"fmt"
+	"russ-rentals/internal/models"
+)
+
+templ ContactForm(properties []models.Property, selectedProperty *models.Property) {
+	<form
+		id="contact-form"
+		hx-post="/contact"
+		hx-target="#form-container"
+		hx-swap="innerHTML"
+		hx-indicator="#form-loading"
+		class="space-y-6"
+	>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<!-- Name -->
+			<div>
+				<label for="name" class="block text-sm font-medium text-slate-700 mb-1">
+					Full Name <span class="text-red-500">*</span>
+				</label>
+				<input
+					type="text"
+					id="name"
+					name="name"
+					required
+					class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+					placeholder="John Doe"
+				/>
+			</div>
+			<!-- Email -->
+			<div>
+				<label for="email" class="block text-sm font-medium text-slate-700 mb-1">
+					Email Address <span class="text-red-500">*</span>
+				</label>
+				<input
+					type="email"
+					id="email"
+					name="email"
+					required
+					class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+					placeholder="john@example.com"
+				/>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<!-- Phone -->
+			<div>
+				<label for="phone" class="block text-sm font-medium text-slate-700 mb-1">
+					Phone Number <span class="text-red-500">*</span>
+				</label>
+				<input
+					type="tel"
+					id="phone"
+					name="phone"
+					required
+					class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+					placeholder="(217) 555-0123"
+				/>
+			</div>
+			<!-- Property Interest -->
+			<div>
+				<label for="property" class="block text-sm font-medium text-slate-700 mb-1">
+					Property of Interest
+				</label>
+				<select
+					id="property"
+					name="property"
+					class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+				>
+					<option value="">General Inquiry</option>
+					for _, p := range properties {
+						if selectedProperty != nil && p.Slug == selectedProperty.Slug {
+							<option value={ p.Slug } selected>{ p.Title }</option>
+						} else {
+							<option value={ p.Slug }>{ p.Title }</option>
+						}
+					}
+				</select>
+			</div>
+		</div>
+
+		<!-- Inquiry Type -->
+		<div>
+			<label class="block text-sm font-medium text-slate-700 mb-2">
+				Inquiry Type
+			</label>
+			<div class="flex flex-wrap gap-4">
+				<label class="flex items-center">
+					<input
+						type="radio"
+						name="inquiryType"
+						value="general"
+						checked
+						class="mr-2 text-amber-500 focus:ring-amber-500"
+					/>
+					<span class="text-slate-700">General Question</span>
+				</label>
+				<label class="flex items-center">
+					<input
+						type="radio"
+						name="inquiryType"
+						value="viewing"
+						class="mr-2 text-amber-500 focus:ring-amber-500"
+					/>
+					<span class="text-slate-700">Schedule Viewing</span>
+				</label>
+				<label class="flex items-center">
+					<input
+						type="radio"
+						name="inquiryType"
+						value="application"
+						class="mr-2 text-amber-500 focus:ring-amber-500"
+					/>
+					<span class="text-slate-700">Apply Now</span>
+				</label>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<!-- Preferred Date -->
+			<div>
+				<label for="preferredDate" class="block text-sm font-medium text-slate-700 mb-1">
+					Preferred Date (for viewings)
+				</label>
+				<input
+					type="date"
+					id="preferredDate"
+					name="preferredDate"
+					class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+				/>
+			</div>
+			<!-- Preferred Time -->
+			<div>
+				<label for="preferredTime" class="block text-sm font-medium text-slate-700 mb-1">
+					Preferred Time
+				</label>
+				<select
+					id="preferredTime"
+					name="preferredTime"
+					class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+				>
+					<option value="">Select a time</option>
+					<option value="morning">Morning (9am - 12pm)</option>
+					<option value="afternoon">Afternoon (12pm - 5pm)</option>
+					<option value="evening">Evening (5pm - 7pm)</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- Message -->
+		<div>
+			<label for="message" class="block text-sm font-medium text-slate-700 mb-1">
+				Message <span class="text-red-500">*</span>
+			</label>
+			<textarea
+				id="message"
+				name="message"
+				required
+				rows="4"
+				class="w-full border border-slate-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+				placeholder="Tell us about what you're looking for..."
+			></textarea>
+		</div>
+
+		<button
+			type="submit"
+			class="w-full bg-slate-800 text-white px-8 py-3 rounded-md font-medium hover:bg-slate-700 transition-colors btn-scale"
+		>
+			Send Message
+		</button>
+
+		<div id="form-loading" class="htmx-indicator text-center">
+			<span class="text-slate-500">Sending...</span>
+		</div>
+	</form>
+}
+
+templ ContactFormSuccess(inquiryType string) {
+	<div class="text-center py-12 animate-fadeIn">
+		<div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+			<svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+			</svg>
+		</div>
+		if inquiryType == "viewing" {
+			<h3 class="text-2xl font-bold text-slate-800 mb-2">Viewing Request Received!</h3>
+			<p class="text-slate-600 mb-6">We'll contact you within 24 hours to confirm your viewing appointment.</p>
+		} else if inquiryType == "application" {
+			<h3 class="text-2xl font-bold text-slate-800 mb-2">Application Request Received!</h3>
+			<p class="text-slate-600 mb-6">We'll send you the application form and next steps shortly.</p>
+		} else {
+			<h3 class="text-2xl font-bold text-slate-800 mb-2">Thank You!</h3>
+			<p class="text-slate-600 mb-6">We've received your message and will get back to you within 24 hours.</p>
+		}
+		<button
+			hx-get={ fmt.Sprintf("/contact?reset=true") }
+			hx-target="#form-container"
+			hx-swap="innerHTML"
+			class="px-6 py-2.5 border-2 border-slate-800 text-slate-800 rounded-md hover:bg-slate-800 hover:text-white transition-colors"
+		>
+			Send Another Message
+		</button>
+	</div>
+}
+
+templ ContactFormError(message string) {
+	<div class="text-center py-4 animate-fadeIn">
+		<div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+			<svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+			</svg>
+		</div>
+		<p class="text-red-600 mb-4">{ message }</p>
+		<p class="text-slate-600 text-sm">Please check your information and try again.</p>
+	</div>
+}

@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.go",
+      "use": "@vercel/go",
+      "config": {
+        "supportsResponseStreaming": true
+      }
+    },
+    {
+      "src": "static/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.go"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "CLERK_SECRET_KEY": "@clerk_secret_key",
+    "CLERK_PUBLISHABLE_KEY": "@clerk_publishable_key"
+  },
+  "regions": ["iad1"]
+}

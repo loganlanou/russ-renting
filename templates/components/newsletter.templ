@@ -1,0 +1,61 @@
+package components
+
+templ Newsletter() {
+	<section class="bg-slate-800 py-16">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="max-w-2xl mx-auto text-center">
+				<h2 class="text-3xl font-bold text-white mb-4">
+					Stay Updated on New Listings
+				</h2>
+				<p class="text-slate-400 mb-8">
+					Subscribe to our newsletter and be the first to know when new properties become available.
+				</p>
+				<div id="newsletter-form">
+					@NewsletterForm()
+				</div>
+			</div>
+		</div>
+	</section>
+}
+
+templ NewsletterForm() {
+	<form
+		hx-post="/api/newsletter"
+		hx-target="#newsletter-form"
+		hx-swap="innerHTML"
+		class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
+	>
+		<input
+			type="email"
+			name="email"
+			placeholder="Enter your email"
+			required
+			class="flex-1 px-4 py-3 rounded-md text-slate-800 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+		/>
+		<button
+			type="submit"
+			class="bg-amber-500 text-white px-6 py-3 rounded-md font-medium hover:bg-amber-600 transition-colors whitespace-nowrap"
+		>
+			Subscribe
+		</button>
+	</form>
+}
+
+templ NewsletterSuccess() {
+	<div class="text-center animate-fadeIn">
+		<div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+			<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+			</svg>
+		</div>
+		<p class="text-white font-medium">Thank you for subscribing!</p>
+		<p class="text-slate-400 text-sm mt-1">You'll be notified when new properties are listed.</p>
+	</div>
+}
+
+templ NewsletterError(message string) {
+	<div class="text-center animate-fadeIn">
+		<p class="text-red-400 mb-4">{ message }</p>
+		@NewsletterForm()
+	</div>
+}
