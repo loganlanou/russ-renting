@@ -77,11 +77,33 @@ templ PropertyCard(p models.Property) {
 }
 
 func formatPrice(price int) string {
-	return fmt.Sprintf("$%,d", price)
+	return FormatPrice(price)
 }
 
 func formatNumber(n int) string {
-	return fmt.Sprintf("%,d", n)
+	return FormatNumber(n)
+}
+
+// FormatPrice formats a price with dollar sign and commas
+func FormatPrice(price int) string {
+	return "$" + FormatNumber(price)
+}
+
+// FormatNumber formats a number with comma separators
+func FormatNumber(n int) string {
+	str := fmt.Sprintf("%d", n)
+	if len(str) <= 3 {
+		return str
+	}
+
+	var result []byte
+	for i, c := range str {
+		if i > 0 && (len(str)-i)%3 == 0 {
+			result = append(result, ',')
+		}
+		result = append(result, byte(c))
+	}
+	return string(result)
 }
 
 func bedroomText(bedrooms int) string {
