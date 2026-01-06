@@ -37,7 +37,7 @@ export function FeaturedCarousel({ properties }: FeaturedCarouselProps) {
   const currentProperty = properties[currentIndex];
 
   return (
-    <section className="relative h-[600px] md:h-[700px] overflow-hidden">
+    <section className="relative h-[640px] md:h-[720px] overflow-hidden">
       {/* Background Images */}
       {properties.map((property, index) => (
         <div
@@ -61,31 +61,31 @@ export function FeaturedCarousel({ properties }: FeaturedCarouselProps) {
 
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-amber-500 rounded-full opacity-10 blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-amber-400 rounded-full opacity-10 blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-16 right-12 w-72 h-72 bg-[#e7c9a5] rounded-full opacity-20 blur-3xl animate-drift" />
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-[#f1dfc7] rounded-full opacity-20 blur-3xl animate-drift" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
         <div className="max-w-2xl animate-fadeIn">
-          <div className="inline-flex items-center gap-2 bg-amber-500/20 backdrop-blur-sm border border-amber-500/30 rounded-full px-4 py-2 mb-6">
-            <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
-            <span className="text-amber-400 text-sm font-medium">Featured Property</span>
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 mb-6">
+            <span className="w-2 h-2 bg-[#f1dfc7] rounded-full animate-pulse" />
+            <span className="text-white text-sm font-semibold uppercase tracking-widest">Featured stay</span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-4 leading-tight font-serif">
             {currentProperty.title}
           </h1>
 
-          <p className="text-lg text-slate-300 mb-2">
+          <p className="text-lg text-white/80 mb-2">
             {currentProperty.address}, {currentProperty.city}
           </p>
 
           <div className="flex items-center gap-6 mb-6">
-            <span className="text-3xl font-bold text-amber-500">
-              {formatPrice(currentProperty.price)}<span className="text-lg text-slate-300">/month</span>
+            <span className="text-3xl font-semibold text-[#f1dfc7]">
+              {formatPrice(currentProperty.price)}<span className="text-lg text-white/70">/month</span>
             </span>
-            <div className="flex items-center gap-4 text-slate-300">
+            <div className="flex flex-wrap items-center gap-4 text-white/80">
               <span className="flex items-center gap-1">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -114,10 +114,58 @@ export function FeaturedCarousel({ properties }: FeaturedCarouselProps) {
               </Button>
             </Link>
             <Link href={`/contact?property=${currentProperty.id}&action=viewing`}>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-slate-800 btn-scale">
+              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-[#0b3945] btn-scale">
                 Schedule Viewing
               </Button>
             </Link>
+          </div>
+
+          <div className="mt-10 bg-white/95 border border-white/40 rounded-3xl p-5 shadow-[0_20px_60px_-30px_rgba(15,76,92,0.6)] max-w-xl">
+            <p className="text-sm font-semibold text-[var(--brand-dark)] uppercase tracking-widest mb-3">
+              Find your next place
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4 text-sm">
+              <label className="flex flex-col gap-2">
+                <span className="text-[var(--muted)]">Location</span>
+                <input
+                  type="text"
+                  placeholder="Neighborhood or city"
+                  className="rounded-full border border-[var(--line)] px-4 py-2.5 text-[var(--foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]/20 outline-none"
+                />
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-[var(--muted)]">Move-in</span>
+                <input
+                  type="date"
+                  className="rounded-full border border-[var(--line)] px-4 py-2.5 text-[var(--foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]/20 outline-none"
+                />
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-[var(--muted)]">Budget</span>
+                <select className="rounded-full border border-[var(--line)] px-4 py-2.5 text-[var(--foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]/20 outline-none">
+                  <option>Up to $1,200</option>
+                  <option>Up to $1,600</option>
+                  <option>Up to $2,000</option>
+                  <option>Up to $2,500</option>
+                </select>
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-[var(--muted)]">Beds</span>
+                <select className="rounded-full border border-[var(--line)] px-4 py-2.5 text-[var(--foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]/20 outline-none">
+                  <option>Any</option>
+                  <option>Studio+</option>
+                  <option>1+</option>
+                  <option>2+</option>
+                  <option>3+</option>
+                </select>
+              </label>
+            </div>
+            <div className="mt-4 flex items-center justify-between">
+              <p className="text-xs text-[var(--muted)]">Showing long-term rentals and hosted stays.</p>
+              <Button variant="primary" size="sm">
+                Search
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -156,7 +204,7 @@ export function FeaturedCarousel({ properties }: FeaturedCarouselProps) {
             }}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentIndex
-                ? 'bg-amber-500 w-8'
+                ? 'bg-[#f1dfc7] w-8'
                 : 'bg-white/50 hover:bg-white/70'
             }`}
             aria-label={`Go to property ${index + 1}`}

@@ -44,12 +44,15 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-      <h2 className="text-lg font-semibold text-slate-800 mb-4">Filter Properties</h2>
+    <div className="bg-white rounded-2xl border border-[var(--line)] p-6 mb-8 shadow-[0_12px_40px_-30px_rgba(27,26,23,0.45)]">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+        <h2 className="text-lg font-semibold text-[var(--foreground)]">Filter Listings</h2>
+        <span className="text-xs uppercase tracking-[0.3em] text-[var(--muted)]">Find your match</span>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Property Type */}
         <div>
-          <label htmlFor="type" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="type" className="block text-sm font-medium text-[var(--muted)] mb-1">
             Property Type
           </label>
           <select
@@ -57,7 +60,7 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
             name="type"
             value={filters.type}
             onChange={handleChange}
-            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+            className="w-full border border-[var(--line)] rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] bg-white"
           >
             <option value="">All Types</option>
             <option value="house">House</option>
@@ -68,7 +71,7 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
 
         {/* Min Price */}
         <div>
-          <label htmlFor="minPrice" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="minPrice" className="block text-sm font-medium text-[var(--muted)] mb-1">
             Min Price
           </label>
           <select
@@ -76,7 +79,7 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
             name="minPrice"
             value={filters.minPrice}
             onChange={handleChange}
-            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+            className="w-full border border-[var(--line)] rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] bg-white"
           >
             <option value="">No Min</option>
             <option value="500">$500</option>
@@ -90,7 +93,7 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
 
         {/* Max Price */}
         <div>
-          <label htmlFor="maxPrice" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="maxPrice" className="block text-sm font-medium text-[var(--muted)] mb-1">
             Max Price
           </label>
           <select
@@ -98,7 +101,7 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
             name="maxPrice"
             value={filters.maxPrice}
             onChange={handleChange}
-            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+            className="w-full border border-[var(--line)] rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] bg-white"
           >
             <option value="">No Max</option>
             <option value="1000">$1,000</option>
@@ -112,7 +115,7 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
 
         {/* Bedrooms */}
         <div>
-          <label htmlFor="bedrooms" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="bedrooms" className="block text-sm font-medium text-[var(--muted)] mb-1">
             Bedrooms
           </label>
           <select
@@ -120,7 +123,7 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
             name="bedrooms"
             value={filters.bedrooms}
             onChange={handleChange}
-            className="w-full border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+            className="w-full border border-[var(--line)] rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] bg-white"
           >
             <option value="">Any</option>
             <option value="0">Studio</option>
@@ -132,7 +135,7 @@ export function PropertyFilter({ onFilterChange }: PropertyFilterProps) {
         </div>
       </div>
 
-      <div className="flex justify-end space-x-3 mt-4">
+      <div className="flex flex-col sm:flex-row justify-end gap-3 mt-4">
         <Button variant="outline" size="sm" onClick={handleClearFilters}>
           Clear Filters
         </Button>

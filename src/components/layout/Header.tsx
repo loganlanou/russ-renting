@@ -40,9 +40,9 @@ export function Header() {
   const renderAuthSection = () => {
     if (isClerkConfigured && SignedIn && SignedOut && UserButton) {
       return (
-        <div className="flex items-center space-x-4 ml-4 border-l border-slate-200 pl-4">
+        <div className="flex items-center space-x-4 ml-4 border-l border-[var(--line)] pl-4">
           <SignedOut>
-            <Link href="/sign-in" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+            <Link href="/sign-in" className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors">
               Sign In
             </Link>
             <Link href="/sign-up">
@@ -52,7 +52,7 @@ export function Header() {
             </Link>
           </SignedOut>
           <SignedIn>
-            <Link href="/dashboard" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+            <Link href="/dashboard" className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors">
               Tenant Portal
             </Link>
             <UserButton
@@ -70,8 +70,8 @@ export function Header() {
 
     // Fallback when Clerk is not configured
     return (
-      <div className="flex items-center space-x-4 ml-4 border-l border-slate-200 pl-4">
-        <Link href="/sign-in" className="text-slate-600 hover:text-slate-800 font-medium transition-colors">
+        <div className="flex items-center space-x-4 ml-4 border-l border-[var(--line)] pl-4">
+        <Link href="/sign-in" className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors">
           Sign In
         </Link>
         <Link href="/sign-up">
@@ -86,11 +86,11 @@ export function Header() {
   const renderMobileAuthSection = () => {
     if (isClerkConfigured && SignedIn && SignedOut && UserButton) {
       return (
-        <div className="border-t border-slate-200 pt-4 space-y-4">
+        <div className="border-t border-[var(--line)] pt-4 space-y-4">
           <SignedOut>
             <Link
               href="/sign-in"
-              className="block text-slate-600 hover:text-slate-800 font-medium transition-colors"
+              className="block text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Sign In
@@ -104,14 +104,14 @@ export function Header() {
           <SignedIn>
             <Link
               href="/dashboard"
-              className="block text-slate-600 hover:text-slate-800 font-medium transition-colors"
+              className="block text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Tenant Portal
             </Link>
             <div className="flex items-center space-x-2">
               <UserButton afterSignOutUrl="/" />
-              <span className="text-slate-600">My Account</span>
+              <span className="text-[var(--muted)]">My Account</span>
             </div>
           </SignedIn>
         </div>
@@ -120,10 +120,10 @@ export function Header() {
 
     // Fallback when Clerk is not configured
     return (
-      <div className="border-t border-slate-200 pt-4 space-y-4">
+      <div className="border-t border-[var(--line)] pt-4 space-y-4">
         <Link
           href="/sign-in"
-          className="block text-slate-600 hover:text-slate-800 font-medium transition-colors"
+          className="block text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
           onClick={() => setIsMobileMenuOpen(false)}
         >
           Sign In
@@ -138,12 +138,12 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-[#f5f1ea]/90 backdrop-blur-xl border-b border-[var(--line)] sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-[var(--brand)] rounded-2xl flex items-center justify-center shadow-[0_10px_25px_-12px_rgba(15,76,92,0.7)]">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -158,7 +158,9 @@ export function Header() {
                   />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-slate-800">Russ Rentals</span>
+              <span className="text-xl font-semibold text-[var(--foreground)] tracking-tight font-serif">
+                Russ Rentals
+              </span>
             </Link>
           </div>
 
@@ -168,7 +170,7 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-slate-600 hover:text-slate-800 font-medium transition-colors"
+                className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors nav-link"
               >
                 {item.name}
               </Link>
@@ -178,7 +180,7 @@ export function Header() {
             {renderAuthSection()}
 
             <Link href="/contact">
-              <Button variant="secondary">Schedule a Viewing</Button>
+              <Button variant="secondary">Schedule a Tour</Button>
             </Link>
           </div>
 
@@ -186,7 +188,7 @@ export function Header() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-slate-600 hover:text-slate-800 focus:outline-none"
+              className="text-[var(--muted)] hover:text-[var(--foreground)] focus:outline-none"
             >
               <svg
                 className="h-6 w-6"
@@ -216,13 +218,13 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden pb-4">
+          <div className="md:hidden pb-6">
             <div className="flex flex-col space-y-4">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-slate-600 hover:text-slate-800 font-medium transition-colors"
+                  className="text-[var(--muted)] hover:text-[var(--foreground)] font-medium transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.name}
@@ -234,7 +236,7 @@ export function Header() {
 
               <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button variant="secondary" className="w-full">
-                  Schedule a Viewing
+                  Schedule a Tour
                 </Button>
               </Link>
             </div>

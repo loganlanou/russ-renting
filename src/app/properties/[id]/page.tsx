@@ -44,20 +44,20 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#f5f1ea]">
       {/* Breadcrumb */}
-      <div className="bg-white border-b">
+      <div className="bg-white border-b border-[var(--line)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center space-x-2 text-sm">
-            <Link href="/" className="text-slate-500 hover:text-slate-700">
+            <Link href="/" className="text-[var(--muted)] hover:text-[var(--foreground)]">
               Home
             </Link>
-            <span className="text-slate-400">/</span>
-            <Link href="/properties" className="text-slate-500 hover:text-slate-700">
+            <span className="text-[var(--muted)] opacity-60">/</span>
+            <Link href="/properties" className="text-[var(--muted)] hover:text-[var(--foreground)]">
               Properties
             </Link>
-            <span className="text-slate-400">/</span>
-            <span className="text-slate-800 font-medium">{property.title}</span>
+            <span className="text-[var(--muted)] opacity-60">/</span>
+            <span className="text-[var(--foreground)] font-medium">{property.title}</span>
           </nav>
         </div>
       </div>
@@ -70,35 +70,35 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             <PropertyGallery images={property.images} title={property.title} />
 
             {/* Property Details */}
-            <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-slate-800 mb-6">Property Details</h2>
+            <div className="mt-8 bg-white rounded-2xl border border-[var(--line)] p-6">
+              <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-6 font-serif">Property Details</h2>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-sm font-medium text-slate-500 mb-1">Property Type</h3>
-                  <p className="text-slate-800">{getPropertyTypeLabel(property.type)}</p>
+                  <h3 className="text-sm font-medium text-[var(--muted)] mb-1">Property Type</h3>
+                  <p className="text-[var(--foreground)]">{getPropertyTypeLabel(property.type)}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-slate-500 mb-1">Year Built</h3>
-                  <p className="text-slate-800">{property.yearBuilt || 'N/A'}</p>
+                  <h3 className="text-sm font-medium text-[var(--muted)] mb-1">Year Built</h3>
+                  <p className="text-[var(--foreground)]">{property.yearBuilt || 'N/A'}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-slate-500 mb-1">Square Footage</h3>
-                  <p className="text-slate-800">{property.squareFeet.toLocaleString()} sqft</p>
+                  <h3 className="text-sm font-medium text-[var(--muted)] mb-1">Square Footage</h3>
+                  <p className="text-[var(--foreground)]">{property.squareFeet.toLocaleString()} sqft</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-slate-500 mb-1">Parking</h3>
-                  <p className="text-slate-800">{property.parking}</p>
+                  <h3 className="text-sm font-medium text-[var(--muted)] mb-1">Parking</h3>
+                  <p className="text-[var(--foreground)]">{property.parking}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-slate-500 mb-1">Laundry</h3>
-                  <p className="text-slate-800">{property.laundry}</p>
+                  <h3 className="text-sm font-medium text-[var(--muted)] mb-1">Laundry</h3>
+                  <p className="text-[var(--foreground)]">{property.laundry}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-slate-500 mb-1">Pet Policy</h3>
-                  <p className="text-slate-800">
+                  <h3 className="text-sm font-medium text-[var(--muted)] mb-1">Pet Policy</h3>
+                  <p className="text-[var(--foreground)]">
                     {property.petFriendly ? (
-                      <span className="text-green-600">
+                      <span className="text-emerald-600">
                         Pets Allowed
                         {property.petDeposit && ` ($${property.petDeposit} deposit`}
                         {property.petRent && `, $${property.petRent}/mo pet rent)`}
@@ -113,19 +113,19 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             </div>
 
             {/* Description */}
-            <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-slate-800 mb-4">Description</h2>
-              <p className="text-slate-600 leading-relaxed">{property.description}</p>
+            <div className="mt-8 bg-white rounded-2xl border border-[var(--line)] p-6">
+              <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-4 font-serif">Description</h2>
+              <p className="text-[var(--muted)] leading-relaxed">{property.description}</p>
             </div>
 
             {/* Features */}
-            <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-slate-800 mb-4">Features & Amenities</h2>
+            <div className="mt-8 bg-white rounded-2xl border border-[var(--line)] p-6">
+              <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-4 font-serif">Features & Amenities</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {property.features.map((feature, index) => (
-                  <div key={index} className="flex items-center text-slate-600">
+                  <div key={index} className="flex items-center text-[var(--muted)]">
                     <svg
-                      className="w-5 h-5 text-green-500 mr-3 flex-shrink-0"
+                      className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -145,17 +145,17 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
             {/* Utilities & Lease Terms */}
             {(property.utilities || property.leaseTerms) && (
-              <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-slate-800 mb-4">Utilities & Lease Information</h2>
+              <div className="mt-8 bg-white rounded-2xl border border-[var(--line)] p-6">
+                <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-4 font-serif">Utilities & Lease Information</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   {property.utilities && property.utilities.length > 0 && (
                     <div>
-                      <h3 className="font-semibold text-slate-700 mb-3">Utilities</h3>
+                      <h3 className="font-semibold text-[var(--foreground)] mb-3">Utilities</h3>
                       <ul className="space-y-2">
                         {property.utilities.map((utility, index) => (
-                          <li key={index} className="flex items-center text-slate-600">
+                          <li key={index} className="flex items-center text-[var(--muted)]">
                             <svg
-                              className="w-4 h-4 text-amber-500 mr-2 flex-shrink-0"
+                              className="w-4 h-4 text-[var(--accent-strong)] mr-2 flex-shrink-0"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -175,12 +175,12 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                   )}
                   {property.leaseTerms && property.leaseTerms.length > 0 && (
                     <div>
-                      <h3 className="font-semibold text-slate-700 mb-3">Lease Terms</h3>
+                      <h3 className="font-semibold text-[var(--foreground)] mb-3">Lease Terms</h3>
                       <ul className="space-y-2">
                         {property.leaseTerms.map((term, index) => (
-                          <li key={index} className="flex items-center text-slate-600">
+                          <li key={index} className="flex items-center text-[var(--muted)]">
                             <svg
-                              className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0"
+                              className="w-4 h-4 text-[var(--brand)] mr-2 flex-shrink-0"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -203,11 +203,11 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             )}
 
             {/* Location */}
-            <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-slate-800 mb-4">Location</h2>
-              <div className="flex items-start text-slate-600">
+            <div className="mt-8 bg-white rounded-2xl border border-[var(--line)] p-6">
+              <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-4 font-serif">Location</h2>
+              <div className="flex items-start text-[var(--muted)]">
                 <svg
-                  className="w-6 h-6 text-slate-400 mr-3 mt-0.5 flex-shrink-0"
+                  className="w-6 h-6 text-[var(--muted)] mr-3 mt-0.5 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -226,15 +226,15 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                   />
                 </svg>
                 <div>
-                  <p className="font-medium text-slate-800">{property.address}</p>
+                  <p className="font-medium text-[var(--foreground)]">{property.address}</p>
                   <p>
                     {property.city}, {property.state} {property.zipCode}
                   </p>
                 </div>
               </div>
               {/* Map Placeholder */}
-              <div className="mt-4 h-64 bg-slate-200 rounded-lg flex items-center justify-center">
-                <p className="text-slate-500">Map view coming soon</p>
+              <div className="mt-4 h-64 bg-[#efe8dd] rounded-2xl flex items-center justify-center border border-[var(--line)]">
+                <p className="text-[var(--muted)]">Map view coming soon</p>
               </div>
             </div>
           </div>
@@ -242,79 +242,79 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           {/* Right Column - Contact Card */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-2xl border border-[var(--line)] p-6">
                 {/* Price */}
                 <div className="mb-4">
-                  <p className="text-3xl font-bold text-slate-800">
+                  <p className="text-3xl font-semibold text-[var(--foreground)]">
                     {formatPrice(property.price)}
-                    <span className="text-lg font-normal text-slate-500">/month</span>
+                    <span className="text-lg font-normal text-[var(--muted)]">/month</span>
                   </p>
                 </div>
 
                 {/* Property Title */}
-                <h1 className="text-2xl font-bold text-slate-800 mb-2">{property.title}</h1>
+                <h1 className="text-2xl font-semibold text-[var(--foreground)] mb-2 font-serif">{property.title}</h1>
 
                 {/* Address */}
-                <p className="text-slate-500 mb-4">{property.address}</p>
+                <p className="text-[var(--muted)] mb-4">{property.address}</p>
 
                 {/* Quick Info */}
-                <div className="flex items-center justify-between border-t border-b py-4 mb-4">
+                <div className="flex items-center justify-between border-t border-b border-[var(--line)] py-4 mb-4">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-slate-800">
+                    <p className="text-2xl font-semibold text-[var(--foreground)]">
                       {property.bedrooms === 0 ? 'Studio' : property.bedrooms}
                     </p>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-[var(--muted)]">
                       {property.bedrooms === 0 ? '' : 'Beds'}
                     </p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-slate-800">{property.bathrooms}</p>
-                    <p className="text-sm text-slate-500">Baths</p>
+                    <p className="text-2xl font-semibold text-[var(--foreground)]">{property.bathrooms}</p>
+                    <p className="text-sm text-[var(--muted)]">Baths</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-slate-800">
+                    <p className="text-2xl font-semibold text-[var(--foreground)]">
                       {property.squareFeet.toLocaleString()}
                     </p>
-                    <p className="text-sm text-slate-500">Sqft</p>
+                    <p className="text-sm text-[var(--muted)]">Sqft</p>
                   </div>
                 </div>
 
                 {/* Pricing Breakdown */}
-                <div className="mb-4 p-4 bg-slate-50 rounded-lg">
-                  <h3 className="font-semibold text-slate-800 mb-3">Move-In Costs</h3>
+                <div className="mb-4 p-4 bg-[#f5f1ea] rounded-2xl border border-[var(--line)]">
+                  <h3 className="font-semibold text-[var(--foreground)] mb-3">Move-In Costs</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-slate-600">Monthly Rent</span>
-                      <span className="font-medium text-slate-800">{formatPrice(property.price)}</span>
+                      <span className="text-[var(--muted)]">Monthly Rent</span>
+                      <span className="font-medium text-[var(--foreground)]">{formatPrice(property.price)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-600">Security Deposit</span>
-                      <span className="font-medium text-slate-800">{formatPrice(property.deposit)}</span>
+                      <span className="text-[var(--muted)]">Security Deposit</span>
+                      <span className="font-medium text-[var(--foreground)]">{formatPrice(property.deposit)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-600">Application Fee</span>
-                      <span className="font-medium text-slate-800">${property.applicationFee}</span>
+                      <span className="text-[var(--muted)]">Application Fee</span>
+                      <span className="font-medium text-[var(--foreground)]">${property.applicationFee}</span>
                     </div>
                     {property.petFriendly && property.petDeposit && (
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Pet Deposit</span>
-                        <span className="font-medium text-slate-800">${property.petDeposit}</span>
+                        <span className="text-[var(--muted)]">Pet Deposit</span>
+                        <span className="font-medium text-[var(--foreground)]">${property.petDeposit}</span>
                       </div>
                     )}
                     {property.petFriendly && property.petRent && (
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Monthly Pet Rent</span>
-                        <span className="font-medium text-slate-800">${property.petRent}/mo</span>
+                        <span className="text-[var(--muted)]">Monthly Pet Rent</span>
+                        <span className="font-medium text-[var(--foreground)]">${property.petRent}/mo</span>
                       </div>
                     )}
-                    <div className="border-t pt-2 mt-2">
+                    <div className="border-t border-[var(--line)] pt-2 mt-2">
                       <div className="flex justify-between font-semibold">
-                        <span className="text-slate-700">Est. Move-In Total</span>
-                        <span className="text-amber-600">
+                        <span className="text-[var(--foreground)]">Est. Move-In Total</span>
+                        <span className="text-[var(--accent-strong)]">
                           {formatPrice(property.price + property.deposit + property.applicationFee)}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-500 mt-1">
+                      <p className="text-xs text-[var(--muted)] mt-1">
                         First month + deposit + application fee
                       </p>
                     </div>
@@ -324,7 +324,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 {/* Availability */}
                 <div className="mb-6">
                   {property.available ? (
-                    <div className="flex items-center text-green-600">
+                    <div className="flex items-center text-emerald-600">
                       <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           fillRule="evenodd"
@@ -377,12 +377,12 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                 </div>
 
                 {/* Contact Info */}
-                <div className="mt-6 pt-6 border-t">
-                  <h3 className="font-semibold text-slate-800 mb-3">Contact Us</h3>
-                  <div className="space-y-2 text-sm text-slate-600">
+                <div className="mt-6 pt-6 border-t border-[var(--line)]">
+                  <h3 className="font-semibold text-[var(--foreground)] mb-3">Contact Us</h3>
+                  <div className="space-y-2 text-sm text-[var(--muted)]">
                     <p className="flex items-center">
                       <svg
-                        className="w-4 h-4 mr-2 text-slate-400"
+                        className="w-4 h-4 mr-2 text-[var(--muted)]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -398,7 +398,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                     </p>
                     <p className="flex items-center">
                       <svg
-                        className="w-4 h-4 mr-2 text-slate-400"
+                        className="w-4 h-4 mr-2 text-[var(--muted)]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

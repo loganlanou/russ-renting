@@ -15,17 +15,17 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors duration-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2';
+  const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2';
 
   const variants = {
-    primary: 'bg-slate-800 text-white hover:bg-slate-700 focus:ring-slate-500',
-    secondary: 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-amber-500',
-    outline: 'border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white focus:ring-slate-500',
+    primary: 'bg-[var(--brand)] text-white hover:bg-[var(--brand-dark)] focus:ring-[var(--brand)] shadow-[0_10px_30px_-18px_rgba(15,76,92,0.8)]',
+    secondary: 'bg-[var(--accent)] text-[var(--brand-dark)] hover:bg-[var(--accent-strong)] focus:ring-[var(--accent)]',
+    outline: 'border-2 border-[var(--brand)] text-[var(--brand)] hover:bg-[var(--brand)] hover:text-white focus:ring-[var(--brand)]',
   };
 
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-5 py-2.5 text-base',
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-2.5 text-base',
     lg: 'px-8 py-3 text-lg',
   };
 

@@ -93,18 +93,18 @@ function ContactForm() {
 
   if (isSubmitted) {
     return (
-      <div className="text-center py-12">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="text-center py-12">
+        <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="text-2xl font-bold text-slate-800 mb-2">
+        <h3 className="text-2xl font-semibold text-[var(--foreground)] mb-2 font-serif">
           {formData.inquiryType === 'viewing' ? 'Viewing Request Received!' :
            formData.inquiryType === 'application' ? 'Application Request Received!' :
            'Thank You!'}
         </h3>
-        <p className="text-slate-600 mb-6">
+        <p className="text-[var(--muted)] mb-6">
           {formData.inquiryType === 'viewing'
             ? 'We will contact you within 24 hours to confirm your viewing appointment.'
             : formData.inquiryType === 'application'
@@ -137,7 +137,7 @@ function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Selected Property Card */}
       {selectedProperty && (
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+        <div className="bg-[#f5f1ea] border border-[var(--line)] rounded-2xl p-4 mb-6">
           <div className="flex items-start gap-4">
             <div className="relative w-24 h-20 rounded-md overflow-hidden flex-shrink-0">
               <Image
@@ -148,9 +148,9 @@ function ContactForm() {
               />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-slate-800 truncate">{selectedProperty.title}</h3>
-              <p className="text-sm text-slate-600 truncate">{selectedProperty.address}</p>
-              <p className="text-amber-600 font-semibold">{formatPrice(selectedProperty.price)}/month</p>
+              <h3 className="font-semibold text-[var(--foreground)] truncate">{selectedProperty.title}</h3>
+              <p className="text-sm text-[var(--muted)] truncate">{selectedProperty.address}</p>
+              <p className="text-[var(--accent-strong)] font-semibold">{formatPrice(selectedProperty.price)}/month</p>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ function ContactForm() {
 
       {/* Inquiry Type */}
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
+        <label className="block text-sm font-medium text-[var(--muted)] mb-2">
           What can we help you with?
         </label>
         <div className="grid grid-cols-3 gap-3">
@@ -167,8 +167,8 @@ function ContactForm() {
             onClick={() => setFormData(prev => ({ ...prev, inquiryType: 'viewing' }))}
             className={`p-3 border rounded-lg text-center transition-colors ${
               formData.inquiryType === 'viewing'
-                ? 'border-amber-500 bg-amber-50 text-amber-700'
-                : 'border-slate-200 hover:border-slate-300'
+                ? 'border-[var(--brand)] bg-white text-[var(--brand)]'
+                : 'border-[var(--line)] hover:border-[var(--brand)]'
             }`}
           >
             <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,8 +181,8 @@ function ContactForm() {
             onClick={() => setFormData(prev => ({ ...prev, inquiryType: 'application' }))}
             className={`p-3 border rounded-lg text-center transition-colors ${
               formData.inquiryType === 'application'
-                ? 'border-amber-500 bg-amber-50 text-amber-700'
-                : 'border-slate-200 hover:border-slate-300'
+                ? 'border-[var(--brand)] bg-white text-[var(--brand)]'
+                : 'border-[var(--line)] hover:border-[var(--brand)]'
             }`}
           >
             <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -195,8 +195,8 @@ function ContactForm() {
             onClick={() => setFormData(prev => ({ ...prev, inquiryType: 'general' }))}
             className={`p-3 border rounded-lg text-center transition-colors ${
               formData.inquiryType === 'general'
-                ? 'border-amber-500 bg-amber-50 text-amber-700'
-                : 'border-slate-200 hover:border-slate-300'
+                ? 'border-[var(--brand)] bg-white text-[var(--brand)]'
+                : 'border-[var(--line)] hover:border-[var(--brand)]'
             }`}
           >
             <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,7 +210,7 @@ function ContactForm() {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Name */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="name" className="block text-sm font-medium text-[var(--muted)] mb-1">
             Full Name *
           </label>
           <input
@@ -220,14 +220,14 @@ function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+            className="w-full border border-[var(--line)] rounded-full px-4 py-2.5 focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] transition-colors"
             placeholder="John Doe"
           />
         </div>
 
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-[var(--muted)] mb-1">
             Email Address *
           </label>
           <input
@@ -237,7 +237,7 @@ function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+            className="w-full border border-[var(--line)] rounded-full px-4 py-2.5 focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] transition-colors"
             placeholder="john@example.com"
           />
         </div>
@@ -246,7 +246,7 @@ function ContactForm() {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Phone */}
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="phone" className="block text-sm font-medium text-[var(--muted)] mb-1">
             Phone Number *
           </label>
           <input
@@ -256,14 +256,14 @@ function ContactForm() {
             value={formData.phone}
             onChange={handleChange}
             required
-            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+            className="w-full border border-[var(--line)] rounded-full px-4 py-2.5 focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] transition-colors"
             placeholder="(555) 123-4567"
           />
         </div>
 
         {/* Property Interest */}
         <div>
-          <label htmlFor="propertyInterest" className="block text-sm font-medium text-slate-700 mb-1">
+          <label htmlFor="propertyInterest" className="block text-sm font-medium text-[var(--muted)] mb-1">
             Property of Interest
           </label>
           <select
@@ -271,7 +271,7 @@ function ContactForm() {
             name="propertyInterest"
             value={formData.propertyInterest}
             onChange={handleChange}
-            className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+            className="w-full border border-[var(--line)] rounded-full px-4 py-2.5 focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] transition-colors"
           >
             <option value="">Select a property (optional)</option>
             {properties.map(property => (
@@ -285,9 +285,9 @@ function ContactForm() {
 
       {/* Viewing Schedule Fields */}
       {formData.inquiryType === 'viewing' && (
-        <div className="grid md:grid-cols-2 gap-6 p-4 bg-slate-50 rounded-lg">
+        <div className="grid md:grid-cols-2 gap-6 p-4 bg-[#f5f1ea] rounded-2xl border border-[var(--line)]">
           <div>
-            <label htmlFor="preferredDate" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="preferredDate" className="block text-sm font-medium text-[var(--muted)] mb-1">
               Preferred Date
             </label>
             <input
@@ -297,11 +297,11 @@ function ContactForm() {
               value={formData.preferredDate}
               onChange={handleChange}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+              className="w-full border border-[var(--line)] rounded-full px-4 py-2.5 focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] transition-colors"
             />
           </div>
           <div>
-            <label htmlFor="preferredTime" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="preferredTime" className="block text-sm font-medium text-[var(--muted)] mb-1">
               Preferred Time
             </label>
             <select
@@ -309,7 +309,7 @@ function ContactForm() {
               name="preferredTime"
               value={formData.preferredTime}
               onChange={handleChange}
-              className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
+              className="w-full border border-[var(--line)] rounded-full px-4 py-2.5 focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] transition-colors"
             >
               <option value="">Select a time</option>
               <option value="9:00 AM">9:00 AM</option>
@@ -328,7 +328,7 @@ function ContactForm() {
 
       {/* Message */}
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="message" className="block text-sm font-medium text-[var(--muted)] mb-1">
           Message *
         </label>
         <textarea
@@ -338,7 +338,7 @@ function ContactForm() {
           onChange={handleChange}
           required
           rows={5}
-          className="w-full border border-slate-300 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors resize-none"
+          className="w-full border border-[var(--line)] rounded-2xl px-4 py-2.5 focus:ring-2 focus:ring-[var(--brand)]/20 focus:border-[var(--brand)] transition-colors resize-none"
           placeholder="Tell us how we can help you..."
         />
       </div>
@@ -357,7 +357,7 @@ function ContactForm() {
          'Send Message'}
       </Button>
 
-      <p className="text-sm text-slate-500 text-center">
+      <p className="text-sm text-[var(--muted)] text-center">
         By submitting this form, you agree to our privacy policy and terms of service.
       </p>
     </form>
@@ -366,7 +366,7 @@ function ContactForm() {
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#f5f1ea]">
       {/* Hero Section */}
       <section className="relative h-[300px]">
         <Image
@@ -376,13 +376,13 @@ export default function ContactPage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-slate-900/70" />
+        <div className="absolute inset-0 hero-gradient" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-5xl font-semibold text-white mb-4 font-serif">
               Contact Us
             </h1>
-            <p className="text-lg text-slate-200">
+            <p className="text-lg text-white/80">
               Have questions? We would love to hear from you. Get in touch with our team.
             </p>
           </div>
@@ -395,8 +395,8 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Contact Info */}
             <div className="lg:col-span-1">
-              <h2 className="text-2xl font-bold text-slate-800 mb-6">Get in Touch</h2>
-              <p className="text-slate-600 mb-8">
+              <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-6 font-serif">Get in Touch</h2>
+              <p className="text-[var(--muted)] mb-8">
                 Our team is here to help you find your perfect rental home. Reach out to us through any of the following methods.
               </p>
 
@@ -404,58 +404,58 @@ export default function ContactPage() {
               <div className="space-y-6">
                 {/* Phone */}
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 border border-[var(--line)]">
+                    <svg className="w-6 h-6 text-[var(--brand)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-800">Phone</h3>
-                    <p className="text-slate-600">(555) 123-4567</p>
-                    <p className="text-sm text-slate-500">Mon-Fri 9am-6pm, Sat 10am-4pm</p>
+                    <h3 className="font-semibold text-[var(--foreground)]">Phone</h3>
+                    <p className="text-[var(--muted)]">(555) 123-4567</p>
+                    <p className="text-sm text-[var(--muted)]">Mon-Fri 9am-6pm, Sat 10am-4pm</p>
                   </div>
                 </div>
 
                 {/* Email */}
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 border border-[var(--line)]">
+                    <svg className="w-6 h-6 text-[var(--brand)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-800">Email</h3>
-                    <p className="text-slate-600">info@russrentals.com</p>
-                    <p className="text-sm text-slate-500">We respond within 24 hours</p>
+                    <h3 className="font-semibold text-[var(--foreground)]">Email</h3>
+                    <p className="text-[var(--muted)]">info@russrentals.com</p>
+                    <p className="text-sm text-[var(--muted)]">We respond within 24 hours</p>
                   </div>
                 </div>
 
                 {/* Address */}
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 border border-[var(--line)]">
+                    <svg className="w-6 h-6 text-[var(--brand)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-800">Office</h3>
-                    <p className="text-slate-600">123 Business Ave</p>
-                    <p className="text-slate-600">Springfield, IL 62701</p>
+                    <h3 className="font-semibold text-[var(--foreground)]">Office</h3>
+                    <p className="text-[var(--muted)]">123 Business Ave</p>
+                    <p className="text-[var(--muted)]">Springfield, IL 62701</p>
                   </div>
                 </div>
 
                 {/* Emergency */}
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center flex-shrink-0">
                     <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-800">Emergency Line</h3>
-                    <p className="text-slate-600">(555) 123-4568</p>
-                    <p className="text-sm text-slate-500">24/7 for current tenants</p>
+                    <h3 className="font-semibold text-[var(--foreground)]">Emergency Line</h3>
+                    <p className="text-[var(--muted)]">(555) 123-4568</p>
+                    <p className="text-sm text-[var(--muted)]">24/7 for current tenants</p>
                   </div>
                 </div>
               </div>
@@ -463,9 +463,9 @@ export default function ContactPage() {
 
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-xl shadow-md p-8">
-                <h2 className="text-2xl font-bold text-slate-800 mb-6">Send Us a Message</h2>
-                <Suspense fallback={<div className="py-12 text-center text-slate-500">Loading form...</div>}>
+              <div className="bg-white rounded-3xl border border-[var(--line)] p-8">
+                <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-6 font-serif">Send Us a Message</h2>
+                <Suspense fallback={<div className="py-12 text-center text-[var(--muted)]">Loading form...</div>}>
                   <ContactForm />
                 </Suspense>
               </div>
@@ -478,70 +478,70 @@ export default function ContactPage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">Visit Our Office</h2>
-            <p className="text-slate-600">
+            <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-2 font-serif">Visit Our Office</h2>
+            <p className="text-[var(--muted)]">
               Stop by during business hours to speak with our team in person.
             </p>
           </div>
-          <div className="h-96 bg-slate-200 rounded-xl flex items-center justify-center">
+          <div className="h-96 bg-[#efe8dd] rounded-3xl flex items-center justify-center border border-[var(--line)]">
             <div className="text-center">
-              <svg className="w-16 h-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-16 h-16 text-[var(--muted)] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <p className="text-slate-500">Interactive map coming soon</p>
-              <p className="text-slate-400 text-sm mt-2">123 Business Ave, Springfield, IL 62701</p>
+              <p className="text-[var(--muted)]">Interactive map coming soon</p>
+              <p className="text-[var(--muted)] text-sm mt-2">123 Business Ave, Springfield, IL 62701</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-[#f5f1ea]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">Frequently Asked Questions</h2>
-            <p className="text-slate-600">
+            <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-2 font-serif">Frequently Asked Questions</h2>
+            <p className="text-[var(--muted)]">
               Quick answers to common questions about renting with us.
             </p>
           </div>
           <div className="space-y-4">
             {/* FAQ Item 1 */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="font-semibold text-slate-800 mb-2">
+            <div className="bg-white rounded-2xl border border-[var(--line)] p-6">
+              <h3 className="font-semibold text-[var(--foreground)] mb-2">
                 What is the application process?
               </h3>
-              <p className="text-slate-600">
+              <p className="text-[var(--muted)]">
                 Our application process is simple. Fill out an online application, provide proof of income, and consent to a background check. We typically process applications within 24-48 hours.
               </p>
             </div>
 
             {/* FAQ Item 2 */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="font-semibold text-slate-800 mb-2">
+            <div className="bg-white rounded-2xl border border-[var(--line)] p-6">
+              <h3 className="font-semibold text-[var(--foreground)] mb-2">
                 What is the security deposit requirement?
               </h3>
-              <p className="text-slate-600">
+              <p className="text-[var(--muted)]">
                 Security deposits are typically equal to one month&apos;s rent. The exact amount will be specified in your lease agreement. Deposits are fully refundable upon move-out, minus any damages beyond normal wear and tear.
               </p>
             </div>
 
             {/* FAQ Item 3 */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="font-semibold text-slate-800 mb-2">
+            <div className="bg-white rounded-2xl border border-[var(--line)] p-6">
+              <h3 className="font-semibold text-[var(--foreground)] mb-2">
                 Do you allow pets?
               </h3>
-              <p className="text-slate-600">
+              <p className="text-[var(--muted)]">
                 Pet policies vary by property. Many of our properties are pet-friendly with a pet deposit and monthly pet rent. Please check individual property listings or contact us for specific pet policies.
               </p>
             </div>
 
             {/* FAQ Item 4 */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="font-semibold text-slate-800 mb-2">
+            <div className="bg-white rounded-2xl border border-[var(--line)] p-6">
+              <h3 className="font-semibold text-[var(--foreground)] mb-2">
                 How do I submit a maintenance request?
               </h3>
-              <p className="text-slate-600">
+              <p className="text-[var(--muted)]">
                 Current tenants can submit maintenance requests through our online portal, by phone, or by email. For emergencies, please use our 24/7 emergency line. We aim to respond to non-emergency requests within 24 hours.
               </p>
             </div>

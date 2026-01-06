@@ -47,8 +47,8 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             onClick={() => { setFilterRoom('all'); setSelectedImage(0); }}
             className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
               filterRoom === 'all'
-                ? 'bg-slate-800 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-[var(--brand)] text-white'
+                : 'bg-[#f5f1ea] text-[var(--muted)] hover:bg-[#efe8dd]'
             }`}
           >
             All Photos ({images.length})
@@ -59,8 +59,8 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
               onClick={() => { setFilterRoom(room); setSelectedImage(0); }}
               className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
                 filterRoom === room
-                  ? 'bg-slate-800 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-[var(--brand)] text-white'
+                  : 'bg-[#f5f1ea] text-[var(--muted)] hover:bg-[#efe8dd]'
               }`}
             >
               {roomLabels[room]} ({images.filter(img => img.room === filterRoom).length})
@@ -70,7 +70,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
 
         {/* Main Image */}
         <div
-          className="relative h-96 md:h-[500px] rounded-lg overflow-hidden cursor-pointer group bg-slate-200"
+          className="relative h-96 md:h-[500px] rounded-3xl overflow-hidden cursor-pointer group bg-[#efe8dd] border border-[var(--line)]"
           onClick={() => setIsModalOpen(true)}
         >
           <img
@@ -98,7 +98,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
           </div>
 
           {/* Image counter */}
-          <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-lg text-sm">
+          <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
             {selectedImage + 1} / {filteredImages.length}
           </div>
         </div>
@@ -110,10 +110,10 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
               <button
                 key={index}
                 onClick={() => setSelectedImage(index)}
-                className={`relative w-24 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-all bg-slate-200 ${
+                className={`relative w-24 h-20 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all bg-[#efe8dd] ${
                   selectedImage === index
-                    ? 'border-amber-500 ring-2 ring-amber-500/30'
-                    : 'border-transparent hover:border-slate-300'
+                    ? 'border-[var(--accent-strong)] ring-2 ring-[var(--accent)]/30'
+                    : 'border-transparent hover:border-[var(--line)]'
                 }`}
               >
                 <img
@@ -126,7 +126,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                   onLoad={() => handleImageLoad(index)}
                 />
                 {selectedImage === index && (
-                  <div className="absolute inset-0 bg-amber-500/10" />
+                  <div className="absolute inset-0 bg-[var(--accent)]/10" />
                 )}
               </button>
             ))}
@@ -142,7 +142,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
         >
           {/* Close button */}
           <button
-            className="absolute top-4 right-4 text-white hover:text-slate-300 transition-colors z-10"
+            className="absolute top-4 right-4 text-white hover:text-white/70 transition-colors z-10"
             onClick={() => setIsModalOpen(false)}
           >
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
 
           {/* Previous button */}
           <button
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-slate-300 transition-colors p-2 bg-black/30 rounded-full hover:bg-black/50"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-white/70 transition-colors p-2 bg-black/30 rounded-full hover:bg-black/50"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedImage((prev) => (prev === 0 ? filteredImages.length - 1 : prev - 1));
@@ -177,7 +177,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
 
           {/* Next button */}
           <button
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-slate-300 transition-colors p-2 bg-black/30 rounded-full hover:bg-black/50"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-white/70 transition-colors p-2 bg-black/30 rounded-full hover:bg-black/50"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedImage((prev) => (prev === filteredImages.length - 1 ? 0 : prev + 1));
@@ -207,9 +207,9 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                   e.stopPropagation();
                   setSelectedImage(index);
                 }}
-                className={`relative w-16 h-12 flex-shrink-0 rounded overflow-hidden transition-all bg-slate-700 ${
+                className={`relative w-16 h-12 flex-shrink-0 rounded overflow-hidden transition-all bg-black/50 ${
                   selectedImage === index
-                    ? 'ring-2 ring-amber-500 opacity-100'
+                    ? 'ring-2 ring-[var(--accent-strong)] opacity-100'
                     : 'opacity-50 hover:opacity-75'
                 }`}
               >
