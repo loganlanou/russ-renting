@@ -63,7 +63,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                   : 'bg-[#f5f1ea] text-[var(--muted)] hover:bg-[#efe8dd]'
               }`}
             >
-              {roomLabels[room]} ({images.filter(img => img.room === filterRoom).length})
+              {roomLabels[room]} ({images.filter(img => img.room === room).length})
             </button>
           ))}
         </div>
